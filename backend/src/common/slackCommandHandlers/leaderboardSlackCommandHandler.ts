@@ -1,5 +1,5 @@
 import { SlackResponseType } from "../factories/definitions/slackCommandHandlerFactory"
-import UserService from "../services/user"
+import TransferService from "../services/transfer"
 import BaseSlackCommandHandler from "./baseSlackCommandHandler"
 
 export default class LeaderboardSlackCommandHandler extends
@@ -14,8 +14,8 @@ export default class LeaderboardSlackCommandHandler extends
   }
 
   public getLeaderboardBlocks() {
-    const userService = new UserService()
+    const transferService = new TransferService()
 
-    return userService.getLeaderboardBlocks(this.teamId)
+    return transferService.getLeaderboardBlocks(this.teamId)
   }
 }
