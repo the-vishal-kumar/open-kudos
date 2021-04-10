@@ -26,14 +26,14 @@ export default class ConfigurationService {
     // At 00:00 on Monday IST
     cron.schedule('30 18 * * 0', async () => {
       try {
-        this.logger.logInfo('Cron task start')
+        this.logger.logInfo('Renew Kudos Cron task start')
         const kudosAmountForWorkspace = await this.settingsService
           .getAllTeamsKudosMonthlyAmount()
 
         await this.userService
           .renewAllUsersKudos(kudosAmountForWorkspace)
 
-        this.logger.logInfo('Cron task end successful')
+        this.logger.logInfo('Renew Kudos Cron task end successful')
       } catch (error) {
         this.logger.logError(error)
       }
@@ -45,9 +45,9 @@ export default class ConfigurationService {
     // At 00:00 on Tuesday IST
     cron.schedule('30 18 * * 1', async () => {
       try {
-        this.logger.logInfo('Cron task start')
+        this.logger.logInfo('Discard Old Kudos Cron task start')
         await this.userService.discardAllUsersOldKudos()
-        this.logger.logInfo('Cron task end successful')
+        this.logger.logInfo('Discard Old Kudos Cron task end successful')
       } catch (error) {
         this.logger.logError(error)
       }
@@ -115,9 +115,9 @@ export default class ConfigurationService {
     // At 12:00 on Monday IST
     cron.schedule('30 6 * * 1', async () => {
       try {
-        this.logger.logInfo('Cron task start')
+        this.logger.logInfo('Random Coffee Notifier Cron task start')
         await this.randomCoffeeService.randomCoffee()
-        this.logger.logInfo('Cron task end successful')
+        this.logger.logInfo('Random Coffee Notifier Cron task end successful')
       } catch (error) {
         this.logger.logError(error)
       }
