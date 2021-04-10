@@ -81,6 +81,10 @@ export default class UserService {
     }))
   }
 
+  public async getUsersWhoCanReceiveGiftRequest(teamId: string) {
+    return User.find({ canReceiveGiftsRequest: true })
+  }
+
   public renewAllUsersKudos
     (kudosAmountForWorkspace: IKudosAmountForWorkspace[]) {
     const updateUsersFromTeams = kudosAmountForWorkspace

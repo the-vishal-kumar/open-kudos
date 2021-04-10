@@ -92,15 +92,17 @@ export default class GiftTransferService {
   public async patchGiftTransfer(
     id: string,
     teamId: string,
-    isNewStatus: boolean
+    isNewStatus: boolean,
+    approvedBy: string
   ) {
     return await GiftTransfer.findOneAndUpdate({
       _id: id,
       teamId
     }, {
-        isNewStatus
-      }, {
-        new: true
-      })
+      isNewStatus,
+      approvedBy
+    }, {
+      new: true
+    })
   }
 }

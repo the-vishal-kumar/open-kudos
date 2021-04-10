@@ -44,11 +44,12 @@ export default class GiftTransfersController {
     @Body('isNewStatus') isNewStatus: boolean,
     @ResponseDecorator() res: Response
   ) {
-    const teamId = req.user.team_id
+    const { user_id: approvedBy, team_id: teamId } = req.user
     const editedGiftTransfer = await this.giftTransferService.patchGiftTransfer(
       id,
       teamId,
-      isNewStatus
+      isNewStatus,
+      approvedBy
     )
 
     if (!editedGiftTransfer) {
