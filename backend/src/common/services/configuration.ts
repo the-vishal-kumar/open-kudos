@@ -63,7 +63,7 @@ export default class ConfigurationService {
         const { teamId, botAccessToken } = await Workspace.findOne({ teamName: SLACK_WORKSPACE_NAME })
         const botResponseChannelId = await this.slackClientService.getResponseBotChannelId(teamId);
         const { docs: transfers } = await this.transferService.getAllPaginated(
-          teamId, Number.MAX_VALUE, 1,
+          teamId, 99999, 1,
           moment().subtract(1, 'd').toDate(),
           moment().toDate()
         );
@@ -77,7 +77,7 @@ export default class ConfigurationService {
               transfers[i].receiverId,
               transfers[i].value,
               transfers[i].comment
-            )}`
+            )}\n`
           }
 
           const client = new WebClient(botAccessToken);
