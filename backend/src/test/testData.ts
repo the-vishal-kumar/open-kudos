@@ -82,41 +82,49 @@ const slackCommandBasicObject: ISlackCommandInfo = {
 const testBuyerUserData: IUser = {
   email: 'test@test.test',
   isAdmin: true,
+  kudosRenewed: 0,
   kudosGiveable: 50,
   kudosGranted: 50,
   kudosSpendable: 200,
   teamId: testTeamId,
-  userId: testBuyerUserId
+  userId: testBuyerUserId,
+  canReceiveGiftsRequest: false
 }
 
 const testUserData: IUser = {
   email: 'test2@test.test',
   isAdmin: true,
+  kudosRenewed: 0,
   kudosGiveable: 50,
   kudosGranted: 50,
   kudosSpendable: 20,
   teamId: testTeamId,
-  userId: testUserId
+  userId: testUserId,
+  canReceiveGiftsRequest: false
 }
 
 const testReceiverData: IUser = {
   email: 'test3@test.test',
   isAdmin: true,
+  kudosRenewed: 0,
   kudosGiveable: 50,
   kudosGranted: 50,
   kudosSpendable: 20,
   teamId: testTeamId,
-  userId: receiverUserId
+  userId: receiverUserId,
+  canReceiveGiftsRequest: false
 }
 
 const newUserData: IUser = {
   email: 'test4@test.test',
   isAdmin: false,
+  kudosRenewed: undefined,
   kudosGiveable: undefined,
   kudosGranted: undefined,
   kudosSpendable: undefined,
   teamId: testTeamId,
-  userId: 'U011C1CCC'
+  userId: 'U011C1CCC',
+  canReceiveGiftsRequest: false
 }
 
 const gameGiftIndex = 0

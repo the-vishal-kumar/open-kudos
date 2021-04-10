@@ -8,9 +8,18 @@ export default class GiveSlackCommandHandler extends BaseSlackCommandHandler {
 
   get transactionComment() {
     const wordsInCommand = this.commandText.split(" ")
-    return wordsInCommand.length > 3
+    let reason = wordsInCommand.length > 3
       ? `${wordsInCommand.slice(3, wordsInCommand.length).join(" ")}`
-      : this.translationsService.getTranslation("forNoReason")
+      : '' // this.translationsService.getTranslation("forNoReason")
+
+    if (reason.length < 10) {
+      throw new Error(
+        this.translationsService.getTranslation(
+          "reasonCannotBeEmpty"
+        )
+      )
+    }
+    return reason
   }
 
   get receiverId() {
@@ -56,17 +65,26 @@ export default class GiveSlackCommandHandler extends BaseSlackCommandHandler {
 
   public async onHandleCommand() {
     await this.transferService.transferKudos(this.transfer)
+    const { receiverId, teamId } = this.transfer;
     this.sendMessage(
       this.getCommandResponse(),
-      await this.getMessageConsumer(),
-      SlackResponseType.General
+      // Posts in General or chosen channel
+      // await this.getMessageConsumer(),
+
+      // Posts message directly to user from Slackbot account
+      {
+        channel: receiverId,
+        teamId: teamId,
+        user: receiverId,
+      },
+      SlackResponseType.Standard
     )
   }
 
   public getCommandResponse() {
     const { senderId, receiverId, value, comment } = this.transfer
     return this.translationsService.getTranslation(
-      "xGaveYZPoints",
+      "youReceivedZPoints",
       senderId,
       receiverId,
       value,

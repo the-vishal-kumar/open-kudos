@@ -73,7 +73,10 @@ class App {
   }
 
   private configureCronTasks(): void {
-    this.configurationService.setResetKudosTask()
+    this.configurationService.setRenewKudosTask()
+    this.configurationService.setDiscardOldKudosTask()
+    this.configurationService.setExchangesKudosOfTheDayTask()
+    this.configurationService.setRandomCoffeeNotifierTask()
   }
 
   private connectToDatabase(): void {

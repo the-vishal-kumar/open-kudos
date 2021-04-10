@@ -13,7 +13,11 @@ export type ITransferDocument = ITransfer & Document
 type ITransferModel<T extends Document> = PaginateModel<T>
 
 const transferSchema: Schema<ITransfer> = new Schema({
-  comment: String,
+  comment: {
+    required: 'Reason is required',
+    trim: true,
+    type: String
+  },
   date: {
     default: new Date(),
     required: 'Date of transaction is required',
@@ -35,7 +39,7 @@ const transferSchema: Schema<ITransfer> = new Schema({
     type: String,
   },
   value: {
-    min: 0,
+    min: 1,
     required: 'Values is required',
     type: Number
   }

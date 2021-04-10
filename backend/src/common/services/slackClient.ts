@@ -166,7 +166,8 @@ export default class SlackClientService {
           name,
           realName: profile.real_name,
           teamId: team_id,
-          userId: id
+          userId: id,
+          canReceiveGiftsRequest: false
         })
         )
     }

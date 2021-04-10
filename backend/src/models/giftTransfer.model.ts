@@ -55,6 +55,11 @@ const giftTransferSchema: Schema<IGiftTransfer> = new Schema({
     trim: true,
     type: String
   },
+  approvedBy: {
+    required: 'User id is required',
+    trim: true,
+    type: String
+  }
 })
 
 giftTransferSchema.index({
@@ -63,7 +68,7 @@ giftTransferSchema.index({
   userId: 'text'
 })
 
-giftTransferSchema.pre('save', async function(this: IGiftTransferDocument) {
+giftTransferSchema.pre('save', async function (this: IGiftTransferDocument) {
   const gift = await Gift.findById(this.giftId)
   this.giftName = gift.name
   this.giftDescription = gift.description

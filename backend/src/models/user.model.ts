@@ -4,6 +4,8 @@ import mongooseAggregatePaginate from 'mongoose-aggregate-paginate-v2'
 export interface IUser {
   userId: string,
   teamId: string,
+  canReceiveGiftsRequest: boolean,
+  kudosRenewed?: number,
   kudosGiveable?: number,
   kudosGranted?: number,
   kudosSpendable?: number,
@@ -25,8 +27,13 @@ const userSchema = new Schema<IUser>({
     default: false,
     type: Boolean
   },
+  kudosRenewed: {
+    default: 0,
+    min: 0,
+    type: Number,
+  },
   kudosGiveable: {
-    default: 100,
+    default: 10,
     min: 0,
     type: Number,
   },
@@ -39,6 +46,10 @@ const userSchema = new Schema<IUser>({
     default: 0,
     min: 0,
     type: Number
+  },
+  canReceiveGiftsRequest: {
+    default: false,
+    type: Boolean
   },
   teamId: {
     required: 'Slack team id is required',

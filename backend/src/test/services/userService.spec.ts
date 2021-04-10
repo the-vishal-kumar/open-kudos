@@ -22,14 +22,14 @@ describe('UserService tests', () => {
     })
   })
 
-  it(`New user should has 100 givable kudos`, async () => {
+  it(`New user should has 10 givable kudos`, async () => {
     const userService = new UserService()
 
     userService.getUser(
       newUserData.teamId,
       newUserData.userId
     ).then(user => {
-      expect(user.kudosGiveable).toEqual(100)
+      expect(user.kudosGiveable).toEqual(10)
     })
   })
 })

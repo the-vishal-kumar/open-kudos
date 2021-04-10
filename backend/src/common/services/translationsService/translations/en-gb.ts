@@ -9,7 +9,7 @@ export default {
   "iCouldntRecognizeThatAction": "I couldn't recognize that action, please contact the administrator",
   "iCouldntRecognizeThatCommandPleaseUseHelp": "I couldn't recognize that command please use help to see the list of commands",
   "kudosBalance": "Here is your Kudos balance\n\n*Kudos to Give*\n{0} Kudos\nThese are Kudos you can give to your teammates and are reset at the beginning of the month.\n\n*Kudos to Spend*\n{1} Kudos \nYou receive these Kudos from your teammates and can spend them to buy gifts. They never expire.",
-  "xGaveYZPoints": "<@{1}> just received *{2}* kudos from <@{0}> {3}.",
+  "xGaveYZPoints": "<@{1}> received *{2}* kudos from <@{0}> {3}.",
   "youBoughtGift": "You've purchased *{0}* for {1} kudos. Please contact the office manager to collect the gift",
   "youCantGivePointsToYourself": "You cant add points for yourself :(",
   "youDontHaveEnoughKudosOrGiftOut": "You don't have enough kudos to buy a gift or the gift is out of stock :(",
@@ -21,5 +21,7 @@ export default {
   "fileToLarge": "File too large.",
   "giftNameReq": "Gift name is required.",
   "giftMustBePositiveInt": "Gift cost must be a positive integer.",
-  "choose": "Choose"
+  "choose": "Choose",
+  "reasonCannotBeEmpty": "Reason cannot be empty",
+  "youReceivedZPoints": "You have received *{2}* kudos from <@{0}> {3}."
 } as ILocaleTranslations

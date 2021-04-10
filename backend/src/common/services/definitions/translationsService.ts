@@ -29,5 +29,7 @@ export interface ILocaleTranslations {
   fileToLarge: string,
   giftNameReq: string,
   giftMustBePositiveInt: string,
-  choose: string
+  choose: string,
+  reasonCannotBeEmpty: string,
+  youReceivedZPoints: string,
 }

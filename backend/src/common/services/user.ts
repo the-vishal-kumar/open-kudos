@@ -81,15 +81,25 @@ export default class UserService {
     }))
   }
 
-  public resetAllUsersGiveableKudos
+  public renewAllUsersKudos
     (kudosAmountForWorkspace: IKudosAmountForWorkspace[]) {
     const updateUsersFromTeams = kudosAmountForWorkspace
       .map((item) => User.updateMany(
         { teamId: item.teamId },
-        { $set: { kudosGiveable: item.monthlyKudosAmount || 100 } }).exec()
+        { $set: { kudosRenewed: item.monthlyKudosAmount || 10 } }).exec()
       )
 
     return Promise.all(updateUsersFromTeams)
+  }
+
+  public async discardAllUsersOldKudos() {
+    const users = await User.find();
+
+    for (let i = 0; i < users.length; i++) {
+      users[i].kudosGiveable = users[i].kudosRenewed;
+      users[i].kudosRenewed = 0;
+      await users[i].save();
+    }
   }
 
   public async getAdmin(teamId: string) {

@@ -18,7 +18,7 @@ export default class SettingsService {
     },
     {
       key: SettingsEnum.MonthlyKudosAmount,
-      value: '100'
+      value: '10'
     },
     {
       key: SettingsEnum.GiftRequestsReceiver,
@@ -46,7 +46,7 @@ export default class SettingsService {
     const kudosAmount =
       await this.getWorkspaceSetting(teamId, SettingsEnum.MonthlyKudosAmount)
 
-    return Number(kudosAmount) || 100
+    return Number(kudosAmount) || Number(this.defaultSettings[1].value)
   }
 
   public async updateWorkspaceSettings(teamId: string, settings: ISettings) {
@@ -84,7 +84,9 @@ export default class SettingsService {
           workspace
             .settings
             .find(({ key }) => key === SettingsEnum.MonthlyKudosAmount)
-        const monthlyKudosAmount = settingMonthlyKudosAmount.value || 100
+
+        const monthlyKudosAmount =
+          settingMonthlyKudosAmount.value || Number(this.defaultSettings[1].value)
 
         return { teamId, monthlyKudosAmount }
       })

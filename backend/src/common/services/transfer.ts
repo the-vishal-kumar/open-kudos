@@ -20,7 +20,14 @@ export default class TransferService {
         this.userService.getUser(teamId, receiverId)
       ])
 
-      sender.kudosGiveable -= value
+      if (value <= sender.kudosGiveable) {
+        sender.kudosGiveable -= value
+      } else if (value <= (sender.kudosRenewed + sender.kudosGiveable)) {
+        sender.kudosRenewed -= value
+        sender.kudosRenewed += sender.kudosGiveable
+        sender.kudosGiveable = 0
+      }
+
       receiver.kudosGranted += value
       receiver.kudosSpendable += value
 
@@ -39,7 +46,7 @@ export default class TransferService {
     const { teamId, senderId, value } = transfer
     try {
       const sender = await this.userService.getUser(teamId, senderId)
-      return sender.kudosGiveable < value
+      return sender.kudosGiveable + sender.kudosRenewed < value
     } catch (error) {
       this.logger.logError(error)
     }
@@ -47,13 +54,14 @@ export default class TransferService {
 
   public async getKudosBalance(teamId: string, userId: string) {
     const {
+      kudosRenewed,
       kudosGiveable,
       kudosSpendable
     } = await this.userService.getUser(teamId, userId)
 
     return this.translationsService.getTranslation(
       'kudosBalance',
-      kudosGiveable,
+      kudosGiveable + kudosRenewed,
       kudosSpendable
     )
   }
@@ -61,17 +69,36 @@ export default class TransferService {
   public async getAllPaginated(
     teamId: string,
     limit?: number,
-    page?: number
+    page?: number,
+    startDate?: Date,
+    endDate?: Date,
   ) {
     const members = await this.slackClientService.getWorkspaceMembers(teamId)
     const membersIds = members.map(({ userId }) => userId)
     const aggregate = Transfer.aggregate()
 
-    aggregate.match({
-      receiverId: { $in: membersIds },
-      senderId: { $in: membersIds },
-      teamId
-    })
+    let criteria = {};
+
+    if (startDate && endDate) {
+      criteria = {
+        receiverId: { $in: membersIds },
+        senderId: { $in: membersIds },
+        teamId,
+        $and: [
+          { date: { $gt: new Date(startDate) } },
+          { date: { $lte: new Date(endDate) } }
+
+        ]
+      }
+    } else {
+      criteria = {
+        receiverId: { $in: membersIds },
+        senderId: { $in: membersIds },
+        teamId,
+      }
+    }
+
+    aggregate.match(criteria)
 
     const transfers = await Transfer.aggregatePaginate(aggregate, {
       limit,
@@ -88,9 +115,15 @@ export default class TransferService {
         receiverName: members.find(
           member => member.userId === transfer.receiverId
         ).name,
+        receiverRealName: members.find(
+          member => member.userId === transfer.receiverId
+        ).realName,
         senderName: members.find(
           member => member.userId === transfer.senderId
-        ).name
+        ).name,
+        senderRealName: members.find(
+          member => member.userId === transfer.senderId
+        ).realName
       }))
     }
   }
