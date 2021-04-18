@@ -105,6 +105,10 @@ export default class UserService {
     }))
   }
 
+  public async getUsersWhoCanReceiveGiftRequest(teamId: string) {
+    return User.find({ canReceiveGiftsRequest: true })
+  }
+
   public renewAllUsersKudos
     (kudosAmountForWorkspace: IKudosAmountForWorkspace[]) {
     const updateUsersFromTeams = kudosAmountForWorkspace
@@ -166,29 +170,6 @@ export default class UserService {
 
   public async createUser(user: IUser) {
     return User.create(user)
-  }
-
-  public async getLeaderboardBlocks(teamId: string): Promise<KnownBlock[]> {
-    const usersPosition = [':one:', ':two:', ':three:', ':four:', ':five:']
-    const top5Users = await User
-      .find({ teamId })
-      .sort({ kudosGranted: 'desc' })
-      .limit(5)
-
-    const text = top5Users
-      .map((user, index) =>
-        `${usersPosition[index]} <@${user.userId}> - ${user.kudosGranted}\n`)
-      .join('\n')
-
-    return [
-      {
-        text: {
-          text,
-          type: "mrkdwn"
-        },
-        type: "section",
-      }
-    ]
   }
 
   public async getTeamInfo(

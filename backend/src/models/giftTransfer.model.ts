@@ -56,7 +56,7 @@ const giftTransferSchema: Schema<IGiftTransfer> = new Schema({
     type: String
   },
   approvedBy: {
-    required: 'User id is required',
+    default: null,
     trim: true,
     type: String
   }

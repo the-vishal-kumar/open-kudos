@@ -64,8 +64,8 @@ const SidebarLayout: React.FC<RouteComponentProps> = (props) => {
 
   useEffect(() => {
     const unsubscribe = store.subscribe(() => {
-      let { userRole: { is_admin } } = store.getState()
-      if (is_admin)
+      let { userRole: { is_admin, canReceiveGiftsRequest } } = store.getState()
+      if (is_admin || canReceiveGiftsRequest)
         setMenuItems(
           menuItems.concat([
             {

@@ -4,12 +4,14 @@ import {
   Response as ResponseDecorator
 } from '@decorators/express'
 import { NextFunction, Response } from 'express'
+import UserService from '../common/services/user'
 import AuthService from '../common/services/auth'
 import LoggerService from '../common/services/logger'
 import { IUserEnhancedRequest } from './definitions/authMiddleware'
 
 export default class AuthMiddleware implements Middleware {
   private authService = new AuthService()
+  private userService = new UserService()
   private logger = new LoggerService()
 
   public async use(
@@ -37,6 +39,8 @@ export default class AuthMiddleware implements Middleware {
 
       // const userRoleIsValid = workspaceRoleReqOk && is_admin || is_owner || is_primary_owner
 
+      const { canReceiveGiftsRequest } = await this.userService.getUser(team_id, user_id)
+
       if (authReqOk
         // && userRoleIsValid
       ) {
@@ -46,7 +50,8 @@ export default class AuthMiddleware implements Middleware {
           user_id,
           is_admin,
           is_owner,
-          is_primary_owner
+          is_primary_owner,
+          canReceiveGiftsRequest
         }
 
         return next()

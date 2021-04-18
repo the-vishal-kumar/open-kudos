@@ -1,9 +1,12 @@
+import { KnownBlock } from '@slack/client'
 import '../../models/transfer.model'
 import Transfer, { ITransfer } from '../../models/transfer.model'
 import LoggerService from './logger'
 import SlackClientService from './slackClient'
 import TranslationsService from './translationsService'
 import UserService from './user'
+import moment from 'moment'
+import _ from 'lodash'
 
 export default class TransferService {
   private translationsService = new TranslationsService()
@@ -126,5 +129,41 @@ export default class TransferService {
         ).realName
       }))
     }
+  }
+
+  public async getLeaderboardBlocks(teamId: string): Promise<KnownBlock[]> {
+    const usersPosition = [':one:', ':two:', ':three:', ':four:', ':five:'];
+
+    const paginatedTransfers = await this.getAllPaginated(teamId, 99999, 1, moment().startOf('week').toDate(), moment().endOf('week').toDate());
+
+    const transfersPerUser = paginatedTransfers.docs.reduce((total, currentValue, currentIndex, arr) => {
+      let indexOfUser = total.findIndex((x) => x.userId == currentValue.receiverId);
+      if (indexOfUser != -1) {
+        total[indexOfUser].kudosGranted += currentValue.value;
+      } else {
+        total.push({
+          userId: currentValue.receiverId,
+          kudosGranted: currentValue.value
+        })
+      }
+      return total
+    }, []);
+
+    const top5Users = _.sortBy(transfersPerUser, ['kudosGranted']).reverse();
+
+    const text = top5Users
+      .slice(0, 5)
+      .map((user, index) => `${usersPosition[index]} <@${user.userId}> - ${user.kudosGranted}\n`)
+      .join('\n');
+
+    return [
+      {
+        text: {
+          text,
+          type: "mrkdwn"
+        },
+        type: "section",
+      }
+    ];
   }
 }

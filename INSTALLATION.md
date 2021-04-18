@@ -47,13 +47,19 @@
         1. Click on `+Add App Icon` button to add icon of your choice (atleast 512x512)
         2. Write short description `Appreciation, Engagement and Recognition Bot`
         3. Write background color `#c55100`
-5. Setup Node Server
+5. Open Slack, see top left for workspace name
+
+    ![Copy Workspace Name](installation/workspacename.png "Copy Workspace Name")
+
+    1. Copy the workspace name as `SLACK_WORKSPACE_NAME`
+    2. In the screenshot, it is `funGyaan`
+6. Setup Node Server
     1. Fork this [repo](https://github.com/the-vishal-kumar/open-kudos)
     2. Deploy this to a server. Copy the `server url` as `BaseUrl`. e.g. Suppose BaseUrl is [https://www.funGyaan.com](https://www.funGyaan.com)
     3. Copy `BaseUrl`+`/auth` as `SLACK_AUTH_REDIRECT_URI`. e.g. https://www.funGyaan.com/auth
     4. Copy `BaseUrl`+`/api/installation` as `SLACK_INSTALL_REDIRECT_URI`. e.g. https://www.funGyaan.com/api/installation
     5. We'll add environment variables in `Step 6`
-6. Setup environment variables on Node Server (with values from previous steps). Following values are sample values:
+7. Setup environment variables on Node Server (with values from previous steps). Following values are sample values:
     ```
     SLACK_AUTH_REDIRECT_URI=https://www.funGyaan.com/auth
     SLACK_INSTALL_REDIRECT_URI=https://www.funGyaan.com/api/installation
@@ -65,9 +71,10 @@
     SIGNING_SECRET=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
     SIGNING_SECRET_VERSION=v0
     DROPBOX_TOKEN=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+    SLACK_WORKSPACE_NAME=funGyaan
     ```
-7. Start Node Server
-8. Setup the created OpenKudos App in Slack App Directory. Go to https://api.slack.com/apps -> `OpenKudos` App
+8. Start Node Server
+9. Setup the created OpenKudos App in Slack App Directory. Go to https://api.slack.com/apps -> `OpenKudos` App
     1. Go to `OAuth & Permissions`->`Redirect URLs`
 
         ![Redirect URLs](installation/addredirecturls.png "Redirect URLs")
@@ -129,11 +136,11 @@
         2. In `Subscribe to bot events`, click on `Add Bot User Event`
             1. Add `member_joined_channel` Event Name
         3. Save Changes
-9. Go to `BaseUrl`. e.g. https://www.funGyaan.com
+10. Go to `BaseUrl`. e.g. https://www.funGyaan.com
     1. Click on `Add to Slack`
     2. Signin to your desired workspace
     3. On successful installation, it'll say `Thanks for installing Open Kudos`
-10. Go to slack workspace
+11. Go to slack workspace
     1. Create or Open a channel
     2. Add App -> Find the slack app you just created and click on `Add` button
     3. Write `/kudos help`
@@ -171,6 +178,6 @@
         You receive these Kudos from your teammates and can spend them to buy gifts. They never expire.
 
         ```
-11. For Dashboard, go to `BaseUrl`+`/dashboard`. e.g. https://www.funGyaan.com/dashboard
+12. For Dashboard, go to `BaseUrl`+`/dashboard`. e.g. https://www.funGyaan.com/dashboard
     1. Signin to your workspace
     2. Re-install App because permissions have changed
