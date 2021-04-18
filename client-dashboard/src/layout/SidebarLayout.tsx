@@ -26,11 +26,11 @@ let menuItemsArray: IMenuItem[] = [
     iconType: 'transaction',
     url: dashboardRoutes.transfersPage
   },
-  {
-    content: titles.giveKudos,
-    iconType: 'like',
-    url: dashboardRoutes.giveKudosPage
-  }
+  // {
+  //   content: titles.giveKudos,
+  //   iconType: 'like',
+  //   url: dashboardRoutes.giveKudosPage
+  // }
 ]
 
 const renderSubMenu = (menuItem: IMenuItem) => {
