@@ -38,8 +38,8 @@ export default class SlackCommandHandlerFactory {
         return new BalanceSlackCommandHandler(this.commandInfo)
       case SlackCommandType.Help:
         return new HelpSlackCommandHandler(this.commandInfo)
-      case SlackCommandType.Gifts:
-        return new GiftsSlackCommandHandler(this.commandInfo)
+      // case SlackCommandType.Gifts:
+      //   return new GiftsSlackCommandHandler(this.commandInfo)
       case SlackCommandType.Leaderboard:
         return new LeaderboardSlackCommandHandler(this.commandInfo)
       default:
