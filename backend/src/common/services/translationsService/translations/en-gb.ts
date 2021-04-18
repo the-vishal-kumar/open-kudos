@@ -24,5 +24,7 @@ export default {
   "giftMustBePositiveInt": "Gift cost must be a positive integer.",
   "choose": "Choose",
   "reasonCannotBeEmpty": "Reason cannot be empty",
-  "youReceivedZPoints": "You have received *{2}* kudos from <@{0}> {3}."
+  "youReceivedZPoints": "You have received *{2}* kudos from <@{0}> {3}.",
+  "youDoNotBelongToIndiaTeam": "You do not belong to India Team",
+  "receiverDoesNotBelongToIndiaTeam": "Receiver doesn't not belong to India Team",
 } as ILocaleTranslations

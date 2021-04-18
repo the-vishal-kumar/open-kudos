@@ -1,7 +1,10 @@
 import { ITransfer } from "../../models/transfer.model"
+import Workspace from "../../models/workspace.model"
 import { SlackResponseType } from "../factories/definitions/slackCommandHandlerFactory"
 import TransferService from "../services/transfer"
 import BaseSlackCommandHandler from "./baseSlackCommandHandler"
+const { SLACK_WORKSPACE_NAME } = process.env; // eslint-disable-line no-unused-vars
+const axios = require(`axios`);
 
 export default class GiveSlackCommandHandler extends BaseSlackCommandHandler {
   private transferService = new TransferService()
@@ -121,6 +124,32 @@ export default class GiveSlackCommandHandler extends BaseSlackCommandHandler {
         this.translationsService
           .getTranslation("youDontHaveEnoughKudosToTransfer")
       )
+    }
+
+    // Check whether sender and receiver belongs to India Team
+    const { teamId, botAccessToken } = await Workspace.findOne({ teamName: SLACK_WORKSPACE_NAME });
+    const botResponseChannelId = await this.slackClientService.getResponseBotChannelId(teamId);
+    const apiConfig = {
+      method: `get`,
+      url: `https://slack.com/api/conversations.members?pretty=1&channel=${botResponseChannelId}`,
+      headers: {
+        'Authorization': `Bearer ${botAccessToken}`
+      }
+    };
+    const { data: { ok, members: channelMembers, error } } = await axios(apiConfig);
+    if (ok && channelMembers.length > 0) {
+      const indexOfSender = channelMembers.findIndex(memberId => memberId == this.senderId);
+      if (indexOfSender === -1) {
+        throw new Error(
+          this.translationsService.getTranslation("youDoNotBelongToIndiaTeam")
+        )
+      }
+      const indexOfReceiver = channelMembers.findIndex(memberId => memberId == this.receiverId.substring(2, this.receiverId.length - 1));
+      if (indexOfReceiver === -1) {
+        throw new Error(
+          this.translationsService.getTranslation("receiverDoesNotBelongToIndiaTeam")
+        )
+      }
     }
   }
 }

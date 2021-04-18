@@ -23,9 +23,9 @@ export default class RandomCoffee {
                 'Authorization': `Bearer ${botAccessToken}`
             }
         };
-        let { data: { ok, members: channelMembers, error } } = await axios(apiConfig);
+        const { data: { ok, members: channelMembers, error } } = await axios(apiConfig);
         if (ok && channelMembers.length > 0) {
-            let allUsers = await this.userService.getUsers(teamId);
+            const allUsers = await this.userService.getUsers(teamId);
             const channelPeopleIds = channelMembers.filter(
                 channelMember => allUsers.findIndex(member => member.userId == channelMember) != -1
             )

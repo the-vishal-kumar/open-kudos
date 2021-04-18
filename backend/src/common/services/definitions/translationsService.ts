@@ -32,4 +32,6 @@ export interface ILocaleTranslations {
   choose: string,
   reasonCannotBeEmpty: string,
   youReceivedZPoints: string,
+  youDoNotBelongToIndiaTeam: string,
+  receiverDoesNotBelongToIndiaTeam: string
 }
