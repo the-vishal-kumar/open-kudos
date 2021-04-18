@@ -17,8 +17,8 @@ export default class SettingsService {
       value: String.empty
     },
     {
-      key: SettingsEnum.MonthlyKudosAmount,
-      value: '10'
+      key: SettingsEnum.WeeklyKudosAmount,
+      value: '5'
     },
     {
       key: SettingsEnum.GiftRequestsReceiver,
@@ -42,9 +42,9 @@ export default class SettingsService {
     return workspaceSetting.value || String.empty
   }
 
-  public async getKudosMonthlyAmount(teamId: string): Promise<number> {
+  public async getKudosWeeklyAmount(teamId: string): Promise<number> {
     const kudosAmount =
-      await this.getWorkspaceSetting(teamId, SettingsEnum.MonthlyKudosAmount)
+      await this.getWorkspaceSetting(teamId, SettingsEnum.WeeklyKudosAmount)
 
     return Number(kudosAmount) || Number(this.defaultSettings[1].value)
   }
@@ -77,21 +77,21 @@ export default class SettingsService {
       .find({})
       .populate('settings')
 
-    const monthlyKudosAmountForTeam = allWorkspaces
+    const weeklyKudosAmountForTeam = allWorkspaces
       .map(workspace => {
         const teamId = workspace.teamId
-        const settingMonthlyKudosAmount =
+        const settingWeeklyKudosAmount =
           workspace
             .settings
-            .find(({ key }) => key === SettingsEnum.MonthlyKudosAmount)
+            .find(({ key }) => key === SettingsEnum.WeeklyKudosAmount)
 
-        const monthlyKudosAmount =
-          settingMonthlyKudosAmount.value || Number(this.defaultSettings[1].value)
+        const weeklyKudosAmount =
+          settingWeeklyKudosAmount.value || Number(this.defaultSettings[1].value)
 
-        return { teamId, monthlyKudosAmount }
+        return { teamId, weeklyKudosAmount }
       })
 
-    return monthlyKudosAmountForTeam as IKudosAmountForWorkspace[]
+    return weeklyKudosAmountForTeam as IKudosAmountForWorkspace[]
   }
 
   public async getGiftRequestsReceiver(teamId: string): Promise<string> {

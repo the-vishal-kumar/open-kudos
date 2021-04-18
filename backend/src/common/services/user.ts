@@ -110,7 +110,7 @@ export default class UserService {
     const updateUsersFromTeams = kudosAmountForWorkspace
       .map((item) => User.updateMany(
         { teamId: item.teamId },
-        { $set: { kudosRenewed: item.monthlyKudosAmount || 10 } }).exec()
+        { $set: { kudosRenewed: item.weeklyKudosAmount || 5 } }).exec()
       )
 
     return Promise.all(updateUsersFromTeams)

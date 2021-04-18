@@ -26,18 +26,18 @@ export default class SettingsController {
     const { team_id } = req.user
     const [
       botResponseChannelId,
-      monthlyKudosAmount,
+      weeklyKudosAmount,
       giftRequestsReceiver
     ] = await Promise.all([
       this.slackService.getResponseBotChannelId(team_id),
-      this.settingsService.getKudosMonthlyAmount(team_id),
+      this.settingsService.getKudosWeeklyAmount(team_id),
       this.settingsService.getGiftRequestsReceiver(team_id)
     ])
 
     res.json({
       botResponseChannelId,
       giftRequestsReceiver,
-      monthlyKudosAmount,
+      weeklyKudosAmount,
     })
   }
 

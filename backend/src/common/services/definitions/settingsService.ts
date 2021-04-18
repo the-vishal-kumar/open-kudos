@@ -1,4 +1,4 @@
 export interface IKudosAmountForWorkspace {
   teamId: string
-  monthlyKudosAmount: number
+  weeklyKudosAmount: number
 }
