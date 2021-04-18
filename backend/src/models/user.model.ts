@@ -33,7 +33,7 @@ const userSchema = new Schema<IUser>({
     type: Number,
   },
   kudosGiveable: {
-    default: 10,
+    default: 5,
     min: 0,
     type: Number,
   },
