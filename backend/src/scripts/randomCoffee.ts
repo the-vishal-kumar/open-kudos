@@ -3,6 +3,7 @@
 require(`dotenv`).config();
 import Workspace from "../models/workspace.model"
 import SlackClientService from '../common/services/slackClient'
+import UserService from '../common/services/user'
 const { SLACK_WORKSPACE_NAME } = process.env; // eslint-disable-line no-unused-vars
 const { WebClient } = require('@slack/client');
 const axios = require(`axios`);
@@ -10,22 +11,27 @@ const _ = require(`lodash`);
 
 export default class RandomCoffee {
     private slackClientService = new SlackClientService()
+    private userService = new UserService()
 
     public randomCoffee = async () => {
-        const workspace = await Workspace.findOne({ teamName: SLACK_WORKSPACE_NAME });
-        const botResponseChannelId = await this.slackClientService.getResponseBotChannelId(workspace.teamId);
+        const { teamId, botAccessToken } = await Workspace.findOne({ teamName: SLACK_WORKSPACE_NAME });
+        const botResponseChannelId = await this.slackClientService.getResponseBotChannelId(teamId);
         const apiConfig = {
             method: `get`,
             url: `https://slack.com/api/conversations.members?pretty=1&channel=${botResponseChannelId}`,
             headers: {
-                'Authorization': `Bearer ${workspace.botAccessToken}`
+                'Authorization': `Bearer ${botAccessToken}`
             }
         };
-        let { data: { ok, members: membersIdArray, error } } = await axios(apiConfig);
-        if (ok && membersIdArray.length > 0) {
+        let { data: { ok, members: channelMembers, error } } = await axios(apiConfig);
+        if (ok && channelMembers.length > 0) {
+            let allUsers = await this.userService.getUsers(teamId);
+            const channelPeopleIds = channelMembers.filter(
+                channelMember => allUsers.findIndex(member => member.userId == channelMember) != -1
+            )
             this.postRandomCoffeeMessage(
-                membersIdArray.filter(userId => userId != workspace.botUserId),
-                workspace.botAccessToken,
+                channelPeopleIds,
+                botAccessToken,
                 botResponseChannelId
             );
         }
