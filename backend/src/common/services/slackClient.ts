@@ -194,7 +194,7 @@ export default class SlackClientService {
           teamId: team_id,
           userId: id,
           canReceiveGiftsRequest: false,
-          haveExtraKudosQuota: false
+          havePriviledgedKudosQuota: false
         })
         )
     }

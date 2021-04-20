@@ -5,7 +5,7 @@ export interface IUser {
   userId: string,
   teamId: string,
   canReceiveGiftsRequest: boolean,
-  haveExtraKudosQuota: boolean,
+  havePriviledgedKudosQuota: boolean,
   kudosRenewed?: number,
   kudosGiveable?: number,
   kudosGranted?: number,
@@ -52,7 +52,7 @@ const userSchema = new Schema<IUser>({
     default: false,
     type: Boolean
   },
-  haveExtraKudosQuota: {
+  havePriviledgedKudosQuota: {
     default: false,
     type: Boolean
   },

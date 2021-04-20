@@ -113,16 +113,16 @@ export default class UserService {
     (kudosAmountForWorkspace: IKudosAmountForWorkspace[]) {
     let updateUsersFromTeams = kudosAmountForWorkspace
       .map((item) => User.updateMany(
-        { teamId: item.teamId, haveExtraKudosQuota: false },
-        { $set: { kudosRenewed: item.weeklyKudosAmount || 5 } }).exec()
+        { teamId: item.teamId, havePriviledgedKudosQuota: false },
+        { $set: { kudosRenewed: item.weeklyKudosAmount } }).exec()
       )
 
     kudosAmountForWorkspace
       .map((item) =>
         updateUsersFromTeams.push(
           User.updateMany(
-            { teamId: item.teamId, haveExtraKudosQuota: true },
-            { $set: { kudosRenewed: item.weeklyKudosAmount * 3 || 15 } }).exec()
+            { teamId: item.teamId, havePriviledgedKudosQuota: true },
+            { $set: { kudosRenewed: item.weeklyKudosPriviledgedAmount } }).exec()
         )
       )
 
