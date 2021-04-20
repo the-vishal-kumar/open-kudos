@@ -12,7 +12,6 @@ import {
 } from './definitions/slackApi'
 import axios, { AxiosRequestConfig } from 'axios'
 
-
 export default class SlackClientService {
   public static clients: IStringTMap<WebClient> = {}
   public static botResponseChannelsIds: IStringTMap<string> = {}
@@ -143,6 +142,25 @@ export default class SlackClientService {
     }
   }
 
+  public async getChannelMembers(
+    teamId: string
+  ): Promise<String[]> {
+    const { botAccessToken } = await Workspace.findOne({ teamId })
+    const botResponseChannelId = await this.getResponseBotChannelId(teamId);
+    const apiConfig: AxiosRequestConfig = {
+      method: `get`,
+      url: `https://slack.com/api/conversations.members?pretty=1&channel=${botResponseChannelId}`,
+      headers: {
+        'Authorization': `Bearer ${botAccessToken}`
+      }
+    };
+    const { data: { ok, members: channelMembers, error } } = await axios(apiConfig);
+    if (ok && channelMembers.length > 0) {
+      return channelMembers
+    }
+    return []
+  }
+
   public async getWorkspaceMembers(
     teamId: string,
     archived = false
@@ -175,6 +193,7 @@ export default class SlackClientService {
 
     return []
   }
+
 
   public setBotResponseChannel(teamId: string, channelId: string) {
     SlackClientService.botResponseChannelsIds[teamId] = channelId

@@ -3,8 +3,8 @@ import Workspace from "../../models/workspace.model"
 import { SlackResponseType } from "../factories/definitions/slackCommandHandlerFactory"
 import TransferService from "../services/transfer"
 import BaseSlackCommandHandler from "./baseSlackCommandHandler"
+import axios, { AxiosRequestConfig } from 'axios'
 const { SLACK_WORKSPACE_NAME } = process.env; // eslint-disable-line no-unused-vars
-const axios = require(`axios`);
 
 export default class GiveSlackCommandHandler extends BaseSlackCommandHandler {
   private transferService = new TransferService()
@@ -145,7 +145,7 @@ export default class GiveSlackCommandHandler extends BaseSlackCommandHandler {
     // Check whether sender and receiver belongs to India Team
     const { teamId, botAccessToken } = await Workspace.findOne({ teamName: SLACK_WORKSPACE_NAME });
     const botResponseChannelId = await this.slackClientService.getResponseBotChannelId(teamId);
-    const apiConfig = {
+    const apiConfig: AxiosRequestConfig = {
       method: `get`,
       url: `https://slack.com/api/conversations.members?pretty=1&channel=${botResponseChannelId}`,
       headers: {

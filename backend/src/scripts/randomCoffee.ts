@@ -4,12 +4,11 @@ require(`dotenv`).config();
 import Workspace from "../models/workspace.model"
 import SlackClientService from '../common/services/slackClient'
 import UserService from '../common/services/user'
-const { SLACK_WORKSPACE_NAME } = process.env; // eslint-disable-line no-unused-vars
+const { SLACK_WORKSPACE_NAME, SLACK_UNWANTED_USERS } = process.env; // eslint-disable-line no-unused-vars
 const { WebClient } = require('@slack/client');
-const axios = require(`axios`);
 const _ = require(`lodash`);
 
-const unwantedUserIds = ['USJLDB79D', 'U04FQHRNG'];
+const unwantedUserIds = SLACK_UNWANTED_USERS ? SLACK_UNWANTED_USERS.split(',') : [];
 
 export default class RandomCoffee {
     private slackClientService = new SlackClientService()
@@ -18,15 +17,8 @@ export default class RandomCoffee {
     public randomCoffee = async () => {
         const { teamId, botAccessToken } = await Workspace.findOne({ teamName: SLACK_WORKSPACE_NAME });
         const botResponseChannelId = await this.slackClientService.getResponseBotChannelId(teamId);
-        const apiConfig = {
-            method: `get`,
-            url: `https://slack.com/api/conversations.members?pretty=1&channel=${botResponseChannelId}`,
-            headers: {
-                'Authorization': `Bearer ${botAccessToken}`
-            }
-        };
-        const { data: { ok, members: channelMembers, error } } = await axios(apiConfig);
-        if (ok && channelMembers.length > 0) {
+        const channelMembers = await this.slackClientService.getChannelMembers(teamId);
+        if (channelMembers.length > 0) {
             const allUsers = await this.userService.getUsers(teamId);
             let channelPeopleIds = channelMembers.filter(
                 channelMember => allUsers.findIndex(member => member.userId == channelMember) != -1
