@@ -132,7 +132,7 @@ export default class TransferService {
   }
 
   public async getLeaderboardBlocks(teamId: string): Promise<KnownBlock[]> {
-    const usersPosition = [':one:', ':two:', ':three:', ':four:', ':five:'];
+    const usersPosition = [':one:', ':two:', ':three:', ':four:', ':five:', ':six:', ':seven:', ':eight:', ':nine:', ':one::zero:'];
 
     const paginatedTransfers = await this.getAllPaginated(teamId, 99999, 1, moment().startOf('week').toDate(), moment().endOf('week').toDate());
 
@@ -149,10 +149,10 @@ export default class TransferService {
       return total
     }, []);
 
-    const top5Users = _.sortBy(transfersPerUser, ['kudosGranted']).reverse();
+    const top10Users = _.sortBy(transfersPerUser, ['kudosGranted']).reverse();
 
-    const text = top5Users
-      .slice(0, 5)
+    const text = top10Users
+      .slice(0, 10)
       .map((user, index) => `${usersPosition[index]} <@${user.userId}> - ${user.kudosGranted}\n`)
       .join('\n');
 
