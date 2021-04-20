@@ -189,7 +189,9 @@ export default class UserService {
     sortColumn?: string
   ) {
     const members = await this.slackClientService.getWorkspaceMembers(teamId)
-    const membersIds = members.map(({ userId }) => userId)
+    // const membersIds = members.map(({ userId }) => userId)
+    // Get India Team Members
+    const membersIds = await this.slackClientService.getChannelMembers(teamId)
     const aggregate = User.aggregate()
 
     aggregate.match({

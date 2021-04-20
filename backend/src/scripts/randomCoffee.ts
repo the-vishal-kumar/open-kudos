@@ -3,29 +3,20 @@
 require(`dotenv`).config();
 import Workspace from "../models/workspace.model"
 import SlackClientService from '../common/services/slackClient'
-import UserService from '../common/services/user'
-const { SLACK_WORKSPACE_NAME, SLACK_UNWANTED_USERS } = process.env; // eslint-disable-line no-unused-vars
+import _ from 'lodash'
 const { WebClient } = require('@slack/client');
-const _ = require(`lodash`);
-
-const unwantedUserIds = SLACK_UNWANTED_USERS ? SLACK_UNWANTED_USERS.split(',') : [];
+const { SLACK_WORKSPACE_NAME } = process.env; // eslint-disable-line no-unused-vars
 
 export default class RandomCoffee {
     private slackClientService = new SlackClientService()
-    private userService = new UserService()
 
     public randomCoffee = async () => {
         const { teamId, botAccessToken } = await Workspace.findOne({ teamName: SLACK_WORKSPACE_NAME });
         const botResponseChannelId = await this.slackClientService.getResponseBotChannelId(teamId);
         const channelMembers = await this.slackClientService.getChannelMembers(teamId);
         if (channelMembers.length > 0) {
-            const allUsers = await this.userService.getUsers(teamId);
-            let channelPeopleIds = channelMembers.filter(
-                channelMember => allUsers.findIndex(member => member.userId == channelMember) != -1
-            );
-            channelPeopleIds = _.difference(channelPeopleIds, unwantedUserIds);
             this.postRandomCoffeeMessage(
-                channelPeopleIds,
+                channelMembers,
                 botAccessToken,
                 botResponseChannelId
             );

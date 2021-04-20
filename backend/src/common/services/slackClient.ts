@@ -1,9 +1,10 @@
+`use strict`;
+require(`dotenv`).config();
 import { KnownBlock, WebClient } from '@slack/client'
 import { IMessageConsumer } from '../../controllers/definitions/slackController'
 import { SettingsEnum } from '../../controllers/settingsController/models/ISettings'
 import { IUser } from '../../models/user.model'
-import { IWorkspace } from '../../models/workspace.model'
-import Workspace from '../../models/workspace.model'
+import Workspace, { IWorkspace } from '../../models/workspace.model'
 import { SlackResponseType } from '../factories/definitions/slackCommandHandlerFactory'
 import SettingService from '../services/settings'
 import {
@@ -11,6 +12,9 @@ import {
   IImOpenResponse
 } from './definitions/slackApi'
 import axios, { AxiosRequestConfig } from 'axios'
+import _ from 'lodash'
+const { SLACK_UNWANTED_USERS } = process.env; // eslint-disable-line no-unused-vars
+const unwantedUserIds = SLACK_UNWANTED_USERS ? SLACK_UNWANTED_USERS.split(',') : [];
 
 export default class SlackClientService {
   public static clients: IStringTMap<WebClient> = {}
@@ -156,9 +160,13 @@ export default class SlackClientService {
     };
     const { data: { ok, members: channelMembers, error } } = await axios(apiConfig);
     if (ok && channelMembers.length > 0) {
-      return channelMembers
+      const allUsers = await this.getWorkspaceMembers(teamId);
+      let channelPeopleIds = channelMembers.filter(
+        channelMember => allUsers.findIndex(member => member.userId == channelMember) != -1
+      );
+      return _.difference(channelPeopleIds, unwantedUserIds);
     }
-    return []
+    return [];
   }
 
   public async getWorkspaceMembers(
