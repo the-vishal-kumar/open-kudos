@@ -12,8 +12,10 @@ import SettingsForm from './SettingsForm'
 
 const SettingsPage: React.FC = () => {
   const [selectedChannel, setSelectedChannel] = useState(String.empty)
-  const [monthlyKudosAmount, setMonthlyKudosAmount] =
+  const [weeklyKudosAmount, setWeeklyKudosAmount] =
     useState(common.defaultKudosAmount)
+  const [weeklyKudosPriviledgedAmount, setWeeklyKudosPriviledgedAmount] =
+    useState(common.defaultKudosPriviledgedAmount)
   const [giftRequestsReceiver, setGiftRequestsReceiver] = useState(String.empty)
   const [loading, setLoading] = useState(false)
   const endpoint = '/api/settings'
@@ -41,13 +43,15 @@ const SettingsPage: React.FC = () => {
     setLoading(true)
     const { data } = await axios.get('/api/settings/bot')
     const {
-      monthlyKudosAmount,
+      weeklyKudosAmount,
+      weeklyKudosPriviledgedAmount,
       botResponseChannelId,
       giftRequestsReceiver
     } = data
 
     setSelectedChannel(botResponseChannelId)
-    setMonthlyKudosAmount(monthlyKudosAmount)
+    setWeeklyKudosAmount(weeklyKudosAmount)
+    setWeeklyKudosPriviledgedAmount(weeklyKudosPriviledgedAmount)
     setGiftRequestsReceiver(giftRequestsReceiver)
     setLoading(false)
   }
@@ -58,7 +62,7 @@ const SettingsPage: React.FC = () => {
     getBotResponseChannelId()
   }, [dispatch])
 
-  const {channels, admins } =
+  const { channels, admins } =
     useSelector<IGlobalState, ISettingsState>(({ settings }) => settings)
 
   const allChannelsOptions = channels.map(({ id, name }) => ({
@@ -80,7 +84,8 @@ const SettingsPage: React.FC = () => {
           allAdmins={allAdminsOptions}
           allChannels={allChannelsOptions}
           botResponseChannelId={selectedChannel}
-          monthlyKudosAmount={monthlyKudosAmount}
+          weeklyKudosAmount={weeklyKudosAmount}
+          weeklyKudosPriviledgedAmount={weeklyKudosPriviledgedAmount}
           giftRequestsReceiver={giftRequestsReceiver}
           onSubmit={onSubmit}
         />

@@ -10,7 +10,8 @@ interface IProps {
   allChannels: IOption[],
   allAdmins: IOption[],
   botResponseChannelId?: string,
-  monthlyKudosAmount?: number,
+  weeklyKudosAmount?: number,
+  weeklyKudosPriviledgedAmount?: number,
   giftRequestsReceiver?: string,
   onSubmit(data: any): void
 }
@@ -19,7 +20,8 @@ const SettingsForm = ({
   allChannels,
   allAdmins,
   botResponseChannelId,
-  monthlyKudosAmount,
+  weeklyKudosPriviledgedAmount,
+  weeklyKudosAmount,
   giftRequestsReceiver,
   onSubmit
 }: IProps) => (
@@ -28,7 +30,8 @@ const SettingsForm = ({
       initialValues={{
         botResponseChannelId,
         giftRequestsReceiver,
-        monthlyKudosAmount
+        weeklyKudosAmount,
+        weeklyKudosPriviledgedAmount
       }}
       render={({ handleSubmit }) => (
         <form onSubmit={handleSubmit}>
@@ -43,10 +46,18 @@ const SettingsForm = ({
             />
           </SettingsCard>
           <SettingsCard
-            title={settingsCardsTitles.monthlyKudosAmount}
+            title={settingsCardsTitles.weeklyKudosAmount}
           >
             <Field
-              name="monthlyKudosAmount"
+              name="weeklyKudosAmount"
+              component={InputNumber}
+            />
+          </SettingsCard>
+          <SettingsCard
+            title={settingsCardsTitles.weeklyKudosPriviledgedAmount}
+          >
+            <Field
+              name="weeklyKudosPriviledgedAmount"
               component={InputNumber}
             />
           </SettingsCard>

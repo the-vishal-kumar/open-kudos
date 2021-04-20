@@ -13,7 +13,7 @@ export const titles = {
   settings: 'Settings',
   team: 'Team',
   title1: 'Title1',
-  transfers: 'Transfers',
+  transfers: 'Kudos',
   users: 'Users'
 }
 
@@ -33,7 +33,8 @@ export const pageTitleMapping = {
 export const settingsCardsTitles = {
   answerChannels: 'Kudos bot answer channel:',
   giftRequestsReceiver: 'Receiver of gift requests:',
-  monthlyKudosAmount: 'Amount of Kudos in month:',
+  weeklyKudosAmount: 'Kudos Amount per week:',
+  weeklyKudosPriviledgedAmount: 'Priviledged Kudos Amount per week:',
   kudosReceiver: 'Receiver of Kudos:',
   kudosAmount: 'Amount of Kudos:',
   kudosReason: 'Reason of giving Kudos:'

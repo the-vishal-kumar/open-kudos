@@ -1,4 +1,5 @@
 export const common = {
   accessTokenKey: 'slack_access_token',
-  defaultKudosAmount: 100
+  defaultKudosAmount: 5,
+  defaultKudosPriviledgedAmount: 15,
 }
