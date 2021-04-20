@@ -31,6 +31,7 @@ export interface ILocaleTranslations {
   giftMustBePositiveInt: string,
   choose: string,
   reasonCannotBeEmpty: string,
+  youGaveZPoints: string,
   youReceivedZPoints: string,
   youDoNotBelongToIndiaTeam: string,
   receiverDoesNotBelongToIndiaTeam: string

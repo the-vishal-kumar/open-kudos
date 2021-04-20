@@ -28,7 +28,7 @@ export default class ConfigurationService {
       try {
         this.logger.logInfo('Renew Kudos Cron task start')
         const kudosAmountForWorkspace = await this.settingsService
-          .getAllTeamsKudosMonthlyAmount()
+          .getAllTeamsKudosWeeklyAmount()
 
         await this.userService
           .renewAllUsersKudos(kudosAmountForWorkspace)

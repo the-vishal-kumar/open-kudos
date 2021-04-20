@@ -5,5 +5,6 @@ export default interface ISettings {
 export enum SettingsEnum {
   BotResponseChannelId = 'botResponseChannelId',
   WeeklyKudosAmount = 'weeklyKudosAmount',
+  WeeklyKudosPriviledgedAmount = 'weeklyKudosPriviledgedAmount',
   GiftRequestsReceiver = 'giftRequestsReceiver'
 }

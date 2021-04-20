@@ -57,15 +57,15 @@ describe('GiveCommandHandler tests', () => {
     expect(informationWhyUserGetsPoints).toEqual('for test purpose')
   })
 
-  it('should return basic reason for giving kudos', () => {
+  it('should throw error if reason is empty while giving kudos', () => {
     const giveCommandHandler =
       new GiveCommandHandlerToTest(giveKudosNoReasonCommand)
 
-    const validMessage = giveCommandHandler.transactionComment
-
-    expect(validMessage).toEqual(`for no reason`)
-  }
-  )
+    expect(giveCommandHandler.validate())
+      .rejects.toThrow(
+        `Reason shall be more than 3 words and 10 characters`
+      )
+  })
 
   it('should throw error if sender equals receiver', () => {
     const giveCommandHandler =
@@ -113,11 +113,17 @@ describe('GiveCommandHandler tests', () => {
     const giveCommandHandler =
       new GiveCommandHandlerToTest(giveKudosWithValidDataCommand)
 
-    const message = giveCommandHandler.getCommandResponse()
+    const senderMessage = giveCommandHandler.getCommandResponseForSender()
+    const receiverMessage = giveCommandHandler.getCommandResponseForReceiver()
 
-    expect(message).toEqual(
+    expect(senderMessage).toEqual(
       // tslint:disable-next-line: max-line-length
-      '<@U072A8BOG> just received *10* kudos from <@U061F7AUR> for test purpose.'
+      'You have given *10* kudos to <@U072A8BOG> for test purpose.'
+    )
+
+    expect(receiverMessage).toEqual(
+      // tslint:disable-next-line: max-line-length
+      'You have received *10* kudos from <@U061F7AUR> for test purpose.'
     )
   })
 })

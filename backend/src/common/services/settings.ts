@@ -21,6 +21,10 @@ export default class SettingsService {
       value: '5'
     },
     {
+      key: SettingsEnum.WeeklyKudosPriviledgedAmount,
+      value: '15'
+    },
+    {
       key: SettingsEnum.GiftRequestsReceiver,
       value: String.empty
     }
@@ -39,7 +43,10 @@ export default class SettingsService {
     const { settings } = workspace
     const workspaceSetting = settings.find(({ key }) => key === settingKey)
 
-    return workspaceSetting.value || String.empty
+    if (settingKey === SettingsEnum.BotResponseChannelId || settingKey === SettingsEnum.GiftRequestsReceiver)
+      return workspaceSetting.value || String.empty
+    else
+      return workspaceSetting.value || 0
   }
 
   public async getKudosWeeklyAmount(teamId: string): Promise<number> {
@@ -47,6 +54,13 @@ export default class SettingsService {
       await this.getWorkspaceSetting(teamId, SettingsEnum.WeeklyKudosAmount)
 
     return Number(kudosAmount) || Number(this.defaultSettings[1].value)
+  }
+
+  public async getKudosPriviledgedWeeklyAmount(teamId: string): Promise<number> {
+    const kudosAmount =
+      await this.getWorkspaceSetting(teamId, SettingsEnum.WeeklyKudosPriviledgedAmount)
+
+    return Number(kudosAmount) || Number(this.defaultSettings[2].value)
   }
 
   public async updateWorkspaceSettings(teamId: string, settings: ISettings) {
@@ -72,7 +86,7 @@ export default class SettingsService {
     }
   }
 
-  public async getAllTeamsKudosMonthlyAmount() {
+  public async getAllTeamsKudosWeeklyAmount() {
     const allWorkspaces = await Workspace
       .find({})
       .populate('settings')
@@ -84,11 +98,18 @@ export default class SettingsService {
           workspace
             .settings
             .find(({ key }) => key === SettingsEnum.WeeklyKudosAmount)
-
         const weeklyKudosAmount =
           settingWeeklyKudosAmount.value || Number(this.defaultSettings[1].value)
 
-        return { teamId, weeklyKudosAmount }
+        const settingWeeklyKudosPriviledgedAmount =
+          workspace
+            .settings
+            .find(({ key }) => key === SettingsEnum.WeeklyKudosPriviledgedAmount)
+        const weeklyKudosPriviledgedAmount =
+          settingWeeklyKudosPriviledgedAmount.value || Number(this.defaultSettings[2].value)
+
+
+        return { teamId, weeklyKudosAmount, weeklyKudosPriviledgedAmount }
       })
 
     return weeklyKudosAmountForTeam as IKudosAmountForWorkspace[]

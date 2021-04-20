@@ -11,18 +11,9 @@ export default class GiveSlackCommandHandler extends BaseSlackCommandHandler {
 
   get transactionComment() {
     const wordsInCommand = this.commandText.split(" ")
-    let reason = wordsInCommand.length > 3
+    return wordsInCommand.length > 3
       ? `${wordsInCommand.slice(3, wordsInCommand.length).join(" ")}`
       : '' // this.translationsService.getTranslation("forNoReason")
-
-    if (reason.length < 10) {
-      throw new Error(
-        this.translationsService.getTranslation(
-          "reasonCannotBeEmpty"
-        )
-      )
-    }
-    return reason
   }
 
   get receiverId() {
@@ -68,13 +59,19 @@ export default class GiveSlackCommandHandler extends BaseSlackCommandHandler {
 
   public async onHandleCommand() {
     await this.transferService.transferKudos(this.transfer)
-    const { receiverId, teamId } = this.transfer;
+    const { senderId, receiverId, teamId } = this.transfer
     this.sendMessage(
-      this.getCommandResponse(),
-      // Posts in General or chosen channel
-      // await this.getMessageConsumer(),
+      this.getCommandResponseForSender(),
+      {
+        channel: senderId,
+        teamId: teamId,
+        user: senderId
+      },
+      SlackResponseType.Standard
+    )
 
-      // Posts message directly to user from Slackbot account
+    this.sendMessage(
+      this.getCommandResponseForReceiver(),
       {
         channel: receiverId,
         teamId: teamId,
@@ -84,7 +81,18 @@ export default class GiveSlackCommandHandler extends BaseSlackCommandHandler {
     )
   }
 
-  public getCommandResponse() {
+  public getCommandResponseForSender() {
+    const { senderId, receiverId, value, comment } = this.transfer
+    return this.translationsService.getTranslation(
+      "youGaveZPoints",
+      senderId,
+      receiverId,
+      value,
+      comment
+    )
+  }
+
+  public getCommandResponseForReceiver() {
     const { senderId, receiverId, value, comment } = this.transfer
     return this.translationsService.getTranslation(
       "youReceivedZPoints",
@@ -123,6 +131,14 @@ export default class GiveSlackCommandHandler extends BaseSlackCommandHandler {
       throw new Error(
         this.translationsService
           .getTranslation("youDontHaveEnoughKudosToTransfer")
+      )
+    }
+
+    if (this.transactionComment.split(' ').length < 4 || this.transactionComment.length < 10) {
+      throw new Error(
+        this.translationsService.getTranslation(
+          "reasonCannotBeEmpty"
+        )
       )
     }
 
