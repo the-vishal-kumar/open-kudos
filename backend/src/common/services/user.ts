@@ -111,10 +111,19 @@ export default class UserService {
 
   public renewAllUsersKudos
     (kudosAmountForWorkspace: IKudosAmountForWorkspace[]) {
-    const updateUsersFromTeams = kudosAmountForWorkspace
+    let updateUsersFromTeams = kudosAmountForWorkspace
       .map((item) => User.updateMany(
-        { teamId: item.teamId },
+        { teamId: item.teamId, haveExtraKudosQuota: false },
         { $set: { kudosRenewed: item.weeklyKudosAmount || 5 } }).exec()
+      )
+
+    kudosAmountForWorkspace
+      .map((item) =>
+        updateUsersFromTeams.push(
+          User.updateMany(
+            { teamId: item.teamId, haveExtraKudosQuota: true },
+            { $set: { kudosRenewed: item.weeklyKudosAmount * 3 || 15 } }).exec()
+        )
       )
 
     return Promise.all(updateUsersFromTeams)

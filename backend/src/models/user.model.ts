@@ -5,6 +5,7 @@ export interface IUser {
   userId: string,
   teamId: string,
   canReceiveGiftsRequest: boolean,
+  haveExtraKudosQuota: boolean,
   kudosRenewed?: number,
   kudosGiveable?: number,
   kudosGranted?: number,
@@ -48,6 +49,10 @@ const userSchema = new Schema<IUser>({
     type: Number
   },
   canReceiveGiftsRequest: {
+    default: false,
+    type: Boolean
+  },
+  haveExtraKudosQuota: {
     default: false,
     type: Boolean
   },

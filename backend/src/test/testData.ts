@@ -88,7 +88,8 @@ const testBuyerUserData: IUser = {
   kudosSpendable: 200,
   teamId: testTeamId,
   userId: testBuyerUserId,
-  canReceiveGiftsRequest: false
+  canReceiveGiftsRequest: false,
+  haveExtraKudosQuota: false
 }
 
 const testUserData: IUser = {
@@ -100,7 +101,8 @@ const testUserData: IUser = {
   kudosSpendable: 20,
   teamId: testTeamId,
   userId: testUserId,
-  canReceiveGiftsRequest: false
+  canReceiveGiftsRequest: false,
+  haveExtraKudosQuota: false
 }
 
 const testReceiverData: IUser = {
@@ -112,7 +114,8 @@ const testReceiverData: IUser = {
   kudosSpendable: 20,
   teamId: testTeamId,
   userId: receiverUserId,
-  canReceiveGiftsRequest: false
+  canReceiveGiftsRequest: false,
+  haveExtraKudosQuota: false
 }
 
 const newUserData: IUser = {
@@ -124,7 +127,8 @@ const newUserData: IUser = {
   kudosSpendable: undefined,
   teamId: testTeamId,
   userId: 'U011C1CCC',
-  canReceiveGiftsRequest: false
+  canReceiveGiftsRequest: false,
+  haveExtraKudosQuota: false
 }
 
 const gameGiftIndex = 0
