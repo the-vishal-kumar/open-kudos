@@ -2,7 +2,7 @@ import { ISlackCommandInfo } from "../../controllers/definitions/slackController
 import BalanceSlackCommandHandler from "../slackCommandHandlers/balanceSlackCommandHandler"
 import BaseSlackCommandHandler from "../slackCommandHandlers/baseSlackCommandHandler"
 import DefaultSlackCommandHandler from "../slackCommandHandlers/defaultSlackCommandHandler"
-import GiftsSlackCommandHandler from "../slackCommandHandlers/giftsSlackCommandHandler"
+// import GiftsSlackCommandHandler from "../slackCommandHandlers/giftsSlackCommandHandler"
 import GiveSlackCommandHandler from "../slackCommandHandlers/giveSlackCommandHandler"
 import HelpSlackCommandHandler from "../slackCommandHandlers/helpSlackCommandHandler"
 import LeaderboardSlackCommandHandler from "../slackCommandHandlers/leaderboardSlackCommandHandler"
@@ -33,7 +33,9 @@ export default class SlackCommandHandlerFactory {
   public createSlackCommandHandler(): BaseSlackCommandHandler {
     switch (this.commandType) {
       case SlackCommandType.Give:
-        return new GiveSlackCommandHandler(this.commandInfo)
+        let commandTextArray = this.commandText.split(' ')
+        commandTextArray.splice(2, 0, '1');
+        return new GiveSlackCommandHandler({ ...this.commandInfo, text: commandTextArray.join(' ') })
       case SlackCommandType.Balance:
         return new BalanceSlackCommandHandler(this.commandInfo)
       case SlackCommandType.Help:
