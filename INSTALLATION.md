@@ -57,12 +57,12 @@
     1. Fork this [repo](https://github.com/the-vishal-kumar/open-kudos)
     2. Deploy this to a server. Copy the `server url` as `BaseUrl`. e.g. Suppose BaseUrl is [https://www.funGyaan.com](https://www.funGyaan.com)
     3. Copy `BaseUrl`+`/auth` as `SLACK_AUTH_REDIRECT_URI`. e.g. https://www.funGyaan.com/auth
-    4. Copy `BaseUrl`+`/api/installation` as `SLACK_INSTALL_REDIRECT_URI`. e.g. https://www.funGyaan.com/api/installation
+    4. Copy `BaseUrl`+`/api/install` as `SLACK_INSTALL_REDIRECT_URI`. e.g. https://www.funGyaan.com/api/install
     5. We'll add environment variables in `Step 6`
 7. Setup environment variables on Node Server (with values from previous steps). Following values are sample values:
     ```
     SLACK_AUTH_REDIRECT_URI=https://www.funGyaan.com/auth
-    SLACK_INSTALL_REDIRECT_URI=https://www.funGyaan.com/api/installation
+    SLACK_INSTALL_REDIRECT_URI=https://www.funGyaan.com/api/install
     POE_API_TOKEN=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
     POE_PROJECT_ID=xxxxx
     DB_CONNECTION_STRING=mongodb://username:password@host:port/database
@@ -136,7 +136,7 @@
         2. In `Subscribe to bot events`, click on `Add Bot User Event`
             1. Add `member_joined_channel` Event Name
         3. Save Changes
-10. Go to `BaseUrl`. e.g. https://www.funGyaan.com
+10. Go to `BaseUrl`+`/install`. e.g. https://www.funGyaan.com/install
     1. Click on `Add to Slack`
     2. Signin to your desired workspace
     3. On successful installation, it'll say `Thanks for installing Open Kudos`
