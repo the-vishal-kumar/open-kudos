@@ -2,12 +2,15 @@ const routes = {
   auth: '/auth',
   dashboardPage: '/dashboard',
   login: '/login',
-  root: '/'
+  root: '/',
+  install: '/install',
+  installationSuccessful: '/installationSuccessful',
 }
 
 const infoRoutes = {
-  installationPage: `/installation`,
-  landingPage: routes.root
+  landingPage: routes.root,
+  installationPage: routes.install,
+  installationSuccessfulPage: routes.installationSuccessful,
 }
 
 const dashboardRoutes = {

@@ -14,7 +14,7 @@ import UserService from '../common/services/user'
 import WorkspaceService from '../common/services/workspace'
 import { IWorkspace } from '../models/workspace.model'
 
-@Controller('/installation')
+@Controller('/install')
 export default class BotInstallationController {
   @Get('/')
   public async install(
@@ -39,7 +39,7 @@ export default class BotInstallationController {
           giftService.initDefaultGifts(workspace.teamId)
         ])
       }
-      res.redirect('/installation')
+      res.redirect('/installationSuccessful')
     } catch (error) {
       res.send(error.message)
     }

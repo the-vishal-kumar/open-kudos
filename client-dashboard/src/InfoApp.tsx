@@ -1,6 +1,7 @@
 import React from 'react'
 import { Route, Switch } from 'react-router-dom'
 import LandingPage from './components/LandingPage'
+import InstallationPage from './components/InstallationPage'
 import SuccessInstallationPage from './components/SuccessInstallationPage'
 import { infoRoutes } from './setup/config'
 
@@ -15,6 +16,11 @@ const InfoApp: React.FC = () => {
       <Route
         exact={true}
         path={infoRoutes.installationPage}
+        component={InstallationPage}
+      />
+      <Route
+        exact={true}
+        path={infoRoutes.installationSuccessfulPage}
         component={SuccessInstallationPage}
       />
     </Switch>
