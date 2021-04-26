@@ -3,6 +3,7 @@
   "version": "0.0.0-semantically-released",
   "license": "MIT",
   "scripts": {
+    "start": "yarn build && yarn watch",
     "build": "chmod +x ./build.sh && ./build.sh",
     "watch": "cd backend && yarn run watch",
     "git-cz": "cross-env IS_GIT_CZ=true git-cz",
