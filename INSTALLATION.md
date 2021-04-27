@@ -147,19 +147,22 @@
         ```
         Happy to help, below a list of commands that you can currently use:
         
-        give @person 10 for helping with code review.
-        - This is the main feature of the bot.
-        - The message structure: give @pointsReceiver [number of points] for [reason]
-        - You can give some points to somebody for some reason or without reason
-        - A message with points without reason: give @pointsReceiver 10
-        
-        balance - this command returns your current balance of points.
-        
-        gifts - this command displays a list of gifts that you can get after exchanging your received points.
-        
-        leaderboard - this command displays a list of top 5 users with the biggest amount of kudos received.
-        
-        help - I guess you already know how it works.
+        balance
+        - see your current kudos balance
+
+        give
+        - this is the main feature of the bot where you give points to fellow co-worker
+        - the message structure: give @pointsReceiver for [reason]
+        - you cannot give kudos to somebody for no reason
+
+        leaderboard
+        - see displays a list of top 10 users with the highest kudos received this week
+
+        gifts
+        - see the list of gifts that you can get in exchange of your received kudos
+
+        help
+        - you already know how it works
         ```
     4. Write `/kudos give @person 10 kudos for implementing Open-Kudos Project` to give 10 kudos points to Vishal
         ```
