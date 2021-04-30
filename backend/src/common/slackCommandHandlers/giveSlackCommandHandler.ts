@@ -59,15 +59,11 @@ export default class GiveSlackCommandHandler extends BaseSlackCommandHandler {
 
   public async onHandleCommand() {
     await this.transferService.transferKudos(this.transfer)
-    const { senderId, receiverId, teamId } = this.transfer
+    const { receiverId, teamId } = this.transfer
     this.sendMessage(
       this.getCommandResponseForSender(),
-      {
-        channel: senderId,
-        teamId: teamId,
-        user: senderId
-      },
-      SlackResponseType.Standard
+      await this.getMessageConsumer(),
+      SlackResponseType.Hidden
     )
 
     this.sendMessage(
