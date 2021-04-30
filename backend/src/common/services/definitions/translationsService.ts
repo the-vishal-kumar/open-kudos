@@ -16,23 +16,24 @@ export interface ILocaleTranslations {
   xGaveYPoints: string
   youCantGivePointsToYourself: string
   youDontHaveEnoughKudosToTransfer: string
-  youTriedToGiveXPointsButThisIsNotValid: string,
-  kudosBalance: string,
-  giftsList: string,
-  getForKudos: string,
-  iCouldntRecognizeThatAction: string,
-  youBoughtGift: string,
-  youDontHaveEnoughKudosOrGiftOut: string,
+  youTriedToGiveXPointsButThisIsNotValid: string
+  kudosBalance: string
+  giftsList: string
+  getForKudos: string
+  iCouldntRecognizeThatAction: string
+  youBoughtGift: string
+  youDontHaveEnoughKudosOrGiftOut: string
   demoExpired: string
-  leaderboard: string,
-  notifyAdminNewGiftPurchase: string,
-  fileToLarge: string,
-  giftNameReq: string,
-  giftMustBePositiveInt: string,
-  choose: string,
-  reasonCannotBeEmpty: string,
-  youGaveYPoints: string,
-  youReceivedYPoints: string,
-  youDoNotBelongToIndiaTeam: string,
+  leaderboard: string
+  notifyAdminNewGiftPurchase: string
+  fileToLarge: string
+  giftNameReq: string
+  giftMustBePositiveInt: string
+  choose: string
+  reasonCannotBeEmpty: string
+  youGaveYPoints: string
+  youReceivedYPoints: string
+  youDoNotBelongToIndiaTeam: string
   receiverDoesNotBelongToIndiaTeam: string
+  emptyLeaderboard: string
 }

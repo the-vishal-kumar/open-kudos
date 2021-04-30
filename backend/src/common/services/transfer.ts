@@ -151,10 +151,10 @@ export default class TransferService {
 
     const top10Users = _.sortBy(transfersPerUser, ['kudosGranted']).reverse();
 
-    const text = top10Users
+    const text = top10Users.length > 0 ? top10Users
       .slice(0, 10)
       .map((user, index) => `${usersPosition[index]} <@${user.userId}> - ${user.kudosGranted}\n`)
-      .join('\n');
+      .join('\n') : this.translationsService.getTranslation('emptyLeaderboard');
 
     return [
       {

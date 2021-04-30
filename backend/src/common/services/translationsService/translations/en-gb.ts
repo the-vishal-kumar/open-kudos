@@ -39,4 +39,5 @@ export default {
   "youReceivedYPoints": "You have received kudos from <@{0}> {3}.",
   "youDoNotBelongToIndiaTeam": "You do not belong to India Team",
   "receiverDoesNotBelongToIndiaTeam": "Receiver doesn't not belong to India Team",
+  "emptyLeaderboard": "Empty Leaderboard! No Kudos were exchanged this week!"
 } as ILocaleTranslations
