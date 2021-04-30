@@ -73,7 +73,7 @@ export default class SettingsController {
             await this.transferService.transferKudos(transferKudosPayload)
 
             this.slackClientService.sendMessage(this.translationsService
-                .getTranslation("youReceivedZPoints",
+                .getTranslation("youReceivedYPoints",
                     transferKudosPayload.senderId,
                     transferKudosPayload.receiverId,
                     transferKudosPayload.value,

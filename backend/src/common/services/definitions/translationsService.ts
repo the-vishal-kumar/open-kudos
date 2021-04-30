@@ -13,7 +13,7 @@ export interface ILocaleTranslations {
   forNoReason: string
   hereYouWillFindAllCommandsThatYouCanUse: string
   iCouldntRecognizeThatCommandPleaseUseHelp: string
-  xGaveYZPoints: string
+  xGaveYPoints: string
   youCantGivePointsToYourself: string
   youDontHaveEnoughKudosToTransfer: string
   youTriedToGiveXPointsButThisIsNotValid: string,
@@ -31,8 +31,8 @@ export interface ILocaleTranslations {
   giftMustBePositiveInt: string,
   choose: string,
   reasonCannotBeEmpty: string,
-  youGaveZPoints: string,
-  youReceivedZPoints: string,
+  youGaveYPoints: string,
+  youReceivedYPoints: string,
   youDoNotBelongToIndiaTeam: string,
   receiverDoesNotBelongToIndiaTeam: string
 }

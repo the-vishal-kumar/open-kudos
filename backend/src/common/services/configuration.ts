@@ -55,9 +55,9 @@ export default class ConfigurationService {
   }
 
   public setExchangesKudosOfTheDayTask() {
-    // At 12:30 on Monday-Friday UTC
-    // At 18:00 on Monday-Friday IST
-    cron.schedule('30 12 * * 1-5', async () => {
+    // At 12:30 on Monday-Sunday UTC
+    // At 18:00 on Monday-Sunday IST
+    cron.schedule('30 12 * * *', async () => {
       try {
         this.logger.logInfo('setExchangesKudosOfTheDayTask::::Cron task start::::')
         const { teamId, botAccessToken } = await Workspace.findOne({ teamName: SLACK_WORKSPACE_NAME })
@@ -72,7 +72,7 @@ export default class ConfigurationService {
           let transfersStr = ``;
           for (let i = 0; i < transfers.length; i++) {
             transfersStr += `${i + 1}. ${this.translationsService.getTranslation(
-              'xGaveYZPoints',
+              'xGaveYPoints',
               transfers[i].senderId,
               transfers[i].receiverId,
               transfers[i].value,

@@ -80,7 +80,7 @@ export default class GiveSlackCommandHandler extends BaseSlackCommandHandler {
   public getCommandResponseForSender() {
     const { senderId, receiverId, value, comment } = this.transfer
     return this.translationsService.getTranslation(
-      "youGaveZPoints",
+      "youGaveYPoints",
       senderId,
       receiverId,
       value,
@@ -91,7 +91,7 @@ export default class GiveSlackCommandHandler extends BaseSlackCommandHandler {
   public getCommandResponseForReceiver() {
     const { senderId, receiverId, value, comment } = this.transfer
     return this.translationsService.getTranslation(
-      "youReceivedZPoints",
+      "youReceivedYPoints",
       senderId,
       receiverId,
       value,

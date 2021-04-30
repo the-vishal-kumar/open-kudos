@@ -6,13 +6,14 @@ export default {
   "getForKudos": "Get for {0} Kudos",
   "giftsList": "There are the list of gifts you can buy",
   // "hereYouWillFindAllCommandsThatYouCanUse": "Happy to help, below a list of commands that you can currently use:\n\n*give @person 10 for helping with code review.*\n- this is the main feature of the bot.\n- the message structure: give @pointsReceiver [number of points] for [reason]\n- you can give some points to somebody for some reason\n\n*balance* - this command returns your current balance of points.\n\n*gifts* - this command displays a list of gifts that you can get after exchanging your received points.\n\n*leaderboard* - this command displays a list of top 10 users with the biggest amount of kudos received this week.\n\n*help* - I guess you already know how it works.",
-  "hereYouWillFindAllCommandsThatYouCanUse": `Happy to help, below a list of commands that you can currently use:\n\n
+  "hereYouWillFindAllCommandsThatYouCanUse": `Happy to help, below a list of commands that you can currently use:\n
   *balance*
   - see your current kudos balance\n
   *give*
   - this is the main feature of the bot where you give points to fellow co-worker
-  - the message structure: *give @pointsReceiver for [reason]*
-  - you cannot give kudos to somebody for no reason\n
+  - the message structure: *give @receiver for [reason]*
+  - you cannot give kudos to somebody for no reason
+  - reason shall be atleast 3 words and 10 characters\n
   *leaderboard*
   - see displays a list of top 10 users with the highest kudos received this week\n
   *help*
@@ -20,7 +21,7 @@ export default {
   "iCouldntRecognizeThatAction": "I couldn't recognize that action, please contact the administrator",
   "iCouldntRecognizeThatCommandPleaseUseHelp": "I couldn't recognize that command please use */kudos help* to see the list of commands",
   "kudosBalance": "Here is your Kudos balance\n\n*Kudos to Give*\n{0} Kudos\nThese are Kudos you can give to your teammates and are reset every Monday midnight.\n\n*Kudos to Spend*\n{1} Kudos \nYou receive these Kudos from your teammates and can spend them to buy gifts. They never expire.",
-  "xGaveYZPoints": "<@{1}> received *{2}* kudos from <@{0}> {3}.",
+  "xGaveYPoints": "<@{1}> received kudos from <@{0}> {3}.",
   "youBoughtGift": "You've purchased *{0}* for {1} kudos. Please contact the office manager to collect the gift",
   "youCantGivePointsToYourself": "You cant add points for yourself :(",
   "youDontHaveEnoughKudosOrGiftOut": "You don't have enough kudos to buy a gift or the gift is out of stock :(",
@@ -34,8 +35,8 @@ export default {
   "giftMustBePositiveInt": "Gift cost must be a positive integer.",
   "choose": "Choose",
   "reasonCannotBeEmpty": "Reason shall be more than 3 words and 10 characters",
-  "youGaveZPoints": "You have given *{2}* kudos to <@{1}> {3}.",
-  "youReceivedZPoints": "You have received *{2}* kudos from <@{0}> {3}.",
+  "youGaveYPoints": "You have given kudos to <@{1}> {3}.",
+  "youReceivedYPoints": "You have received kudos from <@{0}> {3}.",
   "youDoNotBelongToIndiaTeam": "You do not belong to India Team",
   "receiverDoesNotBelongToIndiaTeam": "Receiver doesn't not belong to India Team",
 } as ILocaleTranslations
