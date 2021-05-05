@@ -66,15 +66,15 @@ export default class GiveSlackCommandHandler extends BaseSlackCommandHandler {
       SlackResponseType.Hidden
     )
 
-    this.sendMessage(
-      this.getCommandResponseForReceiver(),
-      {
-        channel: receiverId,
-        teamId: teamId,
-        user: receiverId,
-      },
-      SlackResponseType.Standard
-    )
+    // this.sendMessage(
+    //   this.getCommandResponseForReceiver(),
+    //   {
+    //     channel: receiverId,
+    //     teamId: teamId,
+    //     user: receiverId,
+    //   },
+    //   SlackResponseType.Standard
+    // )
   }
 
   public getCommandResponseForSender() {
