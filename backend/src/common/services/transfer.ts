@@ -34,12 +34,14 @@ export default class TransferService {
       receiver.kudosGranted += value
       receiver.kudosSpendable += value
 
-      await Promise.all([
-        sender.save(),
-        receiver.save(),
-        Transfer.create(transfer)
-      ])
-
+      Transfer.create({ ...transfer, date: new Date() }).then(async (transfer) => {
+        if (transfer)
+          await Promise.all([
+            sender.save(),
+            receiver.save(),
+          ])
+        else throw new Error(this.translationsService.getTranslation('somethingWentWrong'))
+      })
     } catch (error) {
       this.logger.logError(error)
     }

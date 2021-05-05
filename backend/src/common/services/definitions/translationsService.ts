@@ -36,4 +36,5 @@ export interface ILocaleTranslations {
   youDoNotBelongToIndiaTeam: string
   receiverDoesNotBelongToIndiaTeam: string
   emptyLeaderboard: string
+  somethingWentWrong: string
 }
