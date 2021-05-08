@@ -11,7 +11,7 @@ export default {
   - see your current kudos balance\n
   *give*
   - this is the main feature of the bot where you give points to fellow co-worker
-  - the message structure: *give @receiver for [reason]*
+  - the message structure: */kudos give @receiver for [reason]*
   - you cannot give kudos to somebody for no reason
   - reason shall be atleast 3 words and 10 characters\n
   *leaderboard*
