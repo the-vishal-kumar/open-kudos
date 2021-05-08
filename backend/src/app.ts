@@ -75,7 +75,7 @@ class App {
   private configureCronTasks(): void {
     this.configurationService.setRenewKudosTask()
     this.configurationService.setDiscardOldKudosTask()
-    this.configurationService.setExchangesKudosOfTheDayTask()
+    this.configurationService.setExchangedKudosOfTheDayTask()
     this.configurationService.setRandomCoffeeNotifierTask()
   }
 

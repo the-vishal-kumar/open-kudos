@@ -2,24 +2,17 @@ require(`dotenv`).config();
 import cron from 'node-cron'
 import LoggerService from './logger'
 import SettingsService from './settings'
-import Workspace from '../../models/workspace.model'
 import UserService from './user'
-import TransferService from './transfer'
-import TranslationsService from "./translationsService"
-import SlackClientService from './slackClient'
 import RandomCoffeeService from '../../scripts/randomCoffee'
-import moment from 'moment'
-const { SLACK_WORKSPACE_NAME } = process.env; // eslint-disable-line no-unused-vars
-const { WebClient } = require('@slack/client');
+import ExchangedKudosService from '../../scripts/exchangedKudos'
 
 export default class ConfigurationService {
   private userService = new UserService()
-  private transferService = new TransferService()
   private settingsService = new SettingsService()
   private randomCoffeeService = new RandomCoffeeService()
-  private slackClientService = new SlackClientService()
   private logger = new LoggerService()
-  protected translationsService = new TranslationsService()
+
+  private exchangedKudosService = new ExchangedKudosService()
 
   public setRenewKudosTask() {
     // At 18:30 on Sunday UTC
@@ -54,55 +47,13 @@ export default class ConfigurationService {
     })
   }
 
-  public setExchangesKudosOfTheDayTask() {
+  public setExchangedKudosOfTheDayTask() {
     // At 12:30 on Monday-Sunday UTC
     // At 18:00 on Monday-Sunday IST
     cron.schedule('30 12 * * *', async () => {
       try {
         this.logger.logInfo('setExchangesKudosOfTheDayTask::::Cron task start::::')
-        const { teamId, botAccessToken } = await Workspace.findOne({ teamName: SLACK_WORKSPACE_NAME })
-        const botResponseChannelId = await this.slackClientService.getResponseBotChannelId(teamId);
-        const { docs: transfers } = await this.transferService.getAllPaginated(
-          teamId, 99999, 1,
-          moment().subtract(1, 'd').toDate(),
-          moment().toDate()
-        );
-
-        if (transfers.length > 0) {
-          let transfersStr = ``;
-          for (let i = 0; i < transfers.length; i++) {
-            transfersStr += `${i + 1}. ${this.translationsService.getTranslation(
-              'xGaveYPoints',
-              transfers[i].senderId,
-              transfers[i].receiverId,
-              transfers[i].value,
-              transfers[i].comment
-            )}\n`
-          }
-
-          const client = new WebClient(botAccessToken);
-
-          client.chat.postMessage({
-            blocks: [
-              {
-                type: `section`,
-                text: {
-                  type: `mrkdwn`,
-                  text: `@channel Following :clap: were exchanged today`,
-                },
-              },
-              {
-                type: `section`,
-                text: {
-                  type: `mrkdwn`,
-                  text: transfersStr,
-                },
-              },
-            ],
-            channel: botResponseChannelId,
-          });
-        }
-
+        this.exchangedKudosService.postExchangedKudosOfTheDay()
         this.logger.logInfo('setExchangesKudosOfTheDayTask::::Cron task end successful::::')
       } catch (error) {
         this.logger.logError(error)
