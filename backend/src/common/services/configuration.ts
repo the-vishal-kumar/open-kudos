@@ -5,6 +5,7 @@ import SettingsService from './settings'
 import UserService from './user'
 import RandomCoffeeService from '../../scripts/randomCoffee'
 import ExchangedKudosService from '../../scripts/exchangedKudos'
+import KudosTipService from '../../scripts/kudosTip'
 
 export default class ConfigurationService {
   private userService = new UserService()
@@ -13,6 +14,7 @@ export default class ConfigurationService {
   private logger = new LoggerService()
 
   private exchangedKudosService = new ExchangedKudosService()
+  private kudosTipService = new KudosTipService()
 
   public setRenewKudosTask() {
     // At 18:30 on Sunday UTC
@@ -73,5 +75,11 @@ export default class ConfigurationService {
         this.logger.logError(error)
       }
     })
+  }
+
+  public postKudosTip() {
+    this.logger.logInfo('Post Kudos Tip Start')
+    this.kudosTipService.postKudosTip();
+    this.logger.logInfo('Kudos Tip posted successfully')
   }
 }

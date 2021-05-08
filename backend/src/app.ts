@@ -77,6 +77,7 @@ class App {
     this.configurationService.setDiscardOldKudosTask()
     this.configurationService.setExchangedKudosOfTheDayTask()
     this.configurationService.setRandomCoffeeNotifierTask()
+    // this.configurationService.postKudosTip()
   }
 
   private connectToDatabase(): void {
