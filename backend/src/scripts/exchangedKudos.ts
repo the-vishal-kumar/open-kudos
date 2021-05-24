@@ -56,6 +56,28 @@ export default class ExchangedKudos {
                 ],
                 channel: botResponseChannelId,
             });
+        } else {
+            const client = new WebClient(botAccessToken);
+
+            client.chat.postMessage({
+                blocks: [
+                    {
+                        type: `section`,
+                        text: {
+                            type: `mrkdwn`,
+                            text: `@channel I am missing you all :face_with_monocle:`,
+                        },
+                    },
+                    {
+                        type: `section`,
+                        text: {
+                            type: `mrkdwn`,
+                            text: `Take a moment to appreciate :clap: your team member’s Good Work!!! Enjoy your rest of the day :+1:`,
+                        },
+                    },
+                ],
+                channel: botResponseChannelId,
+            });
         }
     }
 }
