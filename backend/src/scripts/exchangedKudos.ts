@@ -24,6 +24,8 @@ export default class ExchangedKudos {
             moment().toDate()
         );
 
+        const client = new WebClient(botAccessToken);
+
         if (transfers.length > 0) {
             let transfersStr = ``;
             for (let i = 0; i < transfers.length; i++) {
@@ -35,7 +37,6 @@ export default class ExchangedKudos {
                     transfers[i].comment
                 )}\n`
             }
-            const client = new WebClient(botAccessToken);
 
             client.chat.postMessage({
                 blocks: [
@@ -56,9 +57,7 @@ export default class ExchangedKudos {
                 ],
                 channel: botResponseChannelId,
             });
-        } else {
-            const client = new WebClient(botAccessToken);
-
+        } else if (moment().isoWeekday() >= 1 || moment().isoWeekday() <= 5) {
             client.chat.postMessage({
                 blocks: [
                     {
