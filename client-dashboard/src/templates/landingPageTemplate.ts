@@ -44,6 +44,62 @@ const landingPageTemplate = `<!DOCTYPE html>
               font-size: 1em;
               color: #b1b1b1;
           }
+
+          body {
+            height:100vh;
+            width:100vw;
+            overflow:hidden;
+            font-family: Lato, "Trebuchet MS", "Verdana", "sans-serif";
+          }
+          
+          #loginbutton {
+            width: 350px;
+            height:50px;
+            border-radius:180px;
+            position:relative;
+            background: linear-gradient(60deg, #f79533, #f37055, #ef4e7b, #a166ab, #5073b8, #1098ad, #07b39b, #6fba82);
+            cursor:pointer;
+            line-height:12px;
+          }
+          
+          #loginbutton:before {
+            z-index:1;
+            position:absolute;
+            display:block;
+            width:80%;
+            height:70%;
+            top:15%;
+            left:10%;
+            transition: 0.3s opacity ease-in-out;
+            filter:blur(15px);
+            opacity:0;
+            background: linear-gradient(60deg, #f79533, #f37055, #ef4e7b, #a166ab, #5073b8, #1098ad, #07b39b, #6fba82);
+          }
+          
+          #loginbutton:hover:before {
+            opacity:1;
+            transition: 0.3s opacity ease-in-out;
+            filter:blur(25px);
+            background: linear-gradient(60deg, #f79533, #f37055, #ef4e7b, #a166ab, #5073b8, #1098ad, #07b39b, #6fba82);  
+          }
+          
+          #loginbutton:after {
+            content:'Go to Dashboard';
+            text-align:center;
+            line-height:40px;
+            font-size:18px;
+            color:rgba(235,235,235,1);
+            font-weight:bold;
+            z-index:5;
+            position:absolute;
+            display:block;
+            border-radius:180px;
+            width:92%;
+            height:80%;
+            top:10%;
+            left:4%;  
+            background-color:rgb(19, 20, 22);
+          }
       </style>
   </head>
 
@@ -55,12 +111,12 @@ const landingPageTemplate = `<!DOCTYPE html>
       <div class="mainContainer">
           <div class="greetingContainer">
               <h1>
-                  <span>Open Kudos </span> <b><br /> Appreciation, Engagement and Recognition Bot</b><br /> <span> Built for digital teams!</span>
+                  <span>Kudos </span> <b><br /> Appreciation, Engagement and Recognition Bot</b><br /> <span> Built for digital teams!</span>
               </h1>
           </div>
           <div class="buttonContainer">
               <a href="/login">
-                <button type="button">Login to Dashboard</button>
+                <div id="loginbutton"></div>
               </a>
           </div>
           <div class="footerContainer">

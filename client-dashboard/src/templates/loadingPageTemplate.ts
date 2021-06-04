@@ -44,7 +44,7 @@ const loadingPageTemplate = `<!DOCTYPE html>
       <div class="mainContainer">
           <div class="greetingContainer">
               <h1>
-                  <span>Open Kudos Dashboard<br /> Please sign in</span>
+                  <span>Kudos Dashboard</span>
               </h1>
           </div>
           <div class="buttonContainer">
