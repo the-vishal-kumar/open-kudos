@@ -22,6 +22,11 @@ let menuItemsArray: IMenuItem[] = [
     url: dashboardRoutes.dashboardPage
   },
   {
+    content: titles.leaderboard,
+    iconType: 'rise',
+    url: dashboardRoutes.leaderboardPage
+  },
+  {
     content: titles.transfers,
     iconType: 'transaction',
     url: dashboardRoutes.transfersPage
@@ -104,7 +109,7 @@ const SidebarLayout: React.FC<RouteComponentProps> = (props) => {
         unsubscribe()
       }
     }
-  }, [])
+  }, [menuItems])
 
   const activeRoute = props.location.pathname
 

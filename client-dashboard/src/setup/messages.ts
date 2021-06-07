@@ -13,13 +13,14 @@ export const titles = {
   settings: 'Settings',
   team: 'Team',
   title1: 'Title1',
-  transfers: 'Kudos',
-  users: 'Users'
+  transfers: 'Kudos History',
+  leaderboard: 'Leaderboard',
+  users: 'Users',
 }
 
 export const pageTitleMapping = {
   [dashboardRoutes.dashboardPage]: (state?: IGlobalState) => titles.dashboard,
-  [dashboardRoutes.giveKudosPage]: (state?: IGlobalState) => titles.giveKudos,
+  // [dashboardRoutes.giveKudosPage]: (state?: IGlobalState) => titles.giveKudos,
   [dashboardRoutes.newGiftPage]: (state?: IGlobalState) => titles.newGift,
   [dashboardRoutes.editGiftPage]: (state?: IGlobalState) => titles.editGift,
   [dashboardRoutes.giftRequestsPage]:
@@ -27,6 +28,7 @@ export const pageTitleMapping = {
   [dashboardRoutes.giftsManagementPage]: (state?: IGlobalState) => titles.gifts,
   [dashboardRoutes.settingPage]: (state?: IGlobalState) => titles.settings,
   [dashboardRoutes.transfersPage]: (state?: IGlobalState) => titles.transfers,
+  [dashboardRoutes.leaderboardPage]: (state?: IGlobalState) => titles.leaderboard,
   [dashboardRoutes.teamManagementPage]: (state?: IGlobalState) => titles.team
 }
 

@@ -32,7 +32,7 @@ const UserSubMenu: React.FC = () => {
     }
 
     fetchUserName()
-  }, [])
+  }, [dispatch])
 
   return (
     <Menu

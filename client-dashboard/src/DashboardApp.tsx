@@ -3,13 +3,14 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import { Redirect, Route, Switch } from 'react-router-dom'
 import DashboardPage from './components/dashboard/DashboardPage'
-import GiveKudosPage from './components/give-kudos/GiveKudosPage'
+// import GiveKudosPage from './components/give-kudos/GiveKudosPage'
 import GiftRequestsPage from './components/gift-requests/GiftRequestsPage'
 import EditGiftPage from './components/gifts/EditGiftPage'
 import GiftPage from './components/gifts/GiftPage'
 import NewGiftPage from './components/gifts/NewGiftPage'
 import SettingsPage from './components/settings/SettingsPage'
 import TransfersPage from './components/transfers/TransfersPage'
+import LeaderboardPage from './components/leaderboard/LeaderboardPage'
 import UsersPage from './components/users/UsersPage'
 import FooterLayout from './layout/FooterLayout'
 import HeaderLayout from './layout/HeaderLayout'
@@ -36,11 +37,11 @@ const DashboardApp: React.FC = () => {
                 exact={true}
                 component={DashboardPage}
               />
-              <Route
+              {/* <Route
                 path={dashboardRoutes.giveKudosPage}
                 exact={true}
                 component={GiveKudosPage}
-              />
+              /> */}
               <Route
                 path={dashboardRoutes.giftRequestsPage}
                 exact={true}
@@ -70,6 +71,11 @@ const DashboardApp: React.FC = () => {
                 path={dashboardRoutes.transfersPage}
                 exact={true}
                 component={TransfersPage}
+              />
+              <Route
+                path={dashboardRoutes.leaderboardPage}
+                exact={true}
+                component={LeaderboardPage}
               />
               <Route
                 path={dashboardRoutes.teamManagementPage}

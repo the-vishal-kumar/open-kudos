@@ -6,5 +6,7 @@ export interface IPaginatedListProps<T> {
   columns: Array<ColumnProps<T>>,
   endpoint: string,
   pageSize?: number,
-  getAPIRef?: RefObject<IPaginatedListAPI>
+  getAPIRef?: RefObject<IPaginatedListAPI>,
+  startDate?: Date,
+  endDate?: Date,
 }

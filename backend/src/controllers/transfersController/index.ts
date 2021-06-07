@@ -17,7 +17,7 @@ export default class TransfersController {
   private transfersService = new TransferService()
 
   @Get('/', [schemaValidatorFatory(TransfersPaginationSchema)])
-  public async getAllGifts(
+  public async getAllTransfers(
     @RequestDecorator() req: IUserEnhancedRequest,
     @QueryParam('limit') limit: number = 10,
     @QueryParam('page') page: number = 1,

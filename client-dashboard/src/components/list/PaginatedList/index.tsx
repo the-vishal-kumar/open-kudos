@@ -1,14 +1,13 @@
 import { notification, Table } from 'antd'
-import { PaginationConfig } from 'antd/lib/table'
+import { PaginationConfig, SortOrder } from 'antd/lib/table'
 import axios from 'axios'
 import React, { useCallback, useEffect, useReducer } from 'react'
 import { IPaginatedListProps, IPaginatedResponse, IWithKey } from '../models'
 import ActionTypes from './actionTypes'
 import createReducer, { paginatedListInitialState } from './reducer'
 
-
 const PaginatedList = <T extends IWithKey>(props: IPaginatedListProps<T>) => {
-  const { endpoint, pageSize, columns, getAPIRef } = props
+  const { columns, endpoint, startDate, endDate, pageSize, getAPIRef } = props
   const rowKey = '_id'
 
   const [state, dispatch] = useReducer(
@@ -19,8 +18,10 @@ const PaginatedList = <T extends IWithKey>(props: IPaginatedListProps<T>) => {
   const fetchData = useCallback(async (
     limit: number = 10,
     page: number = 1,
-    sortOrder?: string,
-    sortColumn?: string
+    sortOrder?: SortOrder,
+    sortColumn?: string,
+    startDate?: Date,
+    endDate?: Date,
   ) => {
     dispatch({
       type: ActionTypes.FETCH_DATA_REQUEST
@@ -33,7 +34,7 @@ const PaginatedList = <T extends IWithKey>(props: IPaginatedListProps<T>) => {
           totalDocs
         }
       } = await axios.get<IPaginatedResponse<T>>(endpoint, {
-        params: { limit, page, sortOrder, sortColumn }
+        params: { limit, page, sortOrder, sortColumn, startDate, endDate }
       })
 
       dispatch({
@@ -66,12 +67,12 @@ const PaginatedList = <T extends IWithKey>(props: IPaginatedListProps<T>) => {
     const sortOrder = sorter.order ? sorter.order : 'ascend'
     const sortColumn = sorter.field ? sorter.field : String.empty
 
-    fetchData(limit, current, sortOrder, sortColumn)
-  }, [fetchData])
+    fetchData(limit, current, sortOrder, sortColumn, startDate, endDate)
+  }, [fetchData, startDate, endDate])
 
   useEffect(() => {
-    fetchData(pageSize || 10, 1)
-  }, [fetchData, pageSize])
+    fetchData(pageSize || 10, 1, 'ascend', String.empty, startDate, endDate)
+  }, [fetchData, pageSize, startDate, endDate])
 
 
   if (getAPIRef) {
@@ -82,9 +83,9 @@ const PaginatedList = <T extends IWithKey>(props: IPaginatedListProps<T>) => {
         if (pagination) {
           const current = pagination.current || 1
 
-          fetchData(pageSize, current)
+          fetchData(pageSize, current, 'ascend', String.empty, startDate, endDate)
         } else {
-          fetchData(0, pageSize || 10)
+          fetchData(0, pageSize || 10, 'ascend', String.empty, startDate, endDate)
         }
       }
     }

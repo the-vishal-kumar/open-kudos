@@ -17,6 +17,7 @@ import GiveKudosController from './controllers/giveKudosController'
 import SlackController from './controllers/slackController'
 import TestController from './controllers/testController'
 import TransfersController from './controllers/transfersController'
+import LeaderboardController from './controllers/leaderboardController'
 import UsersController from './controllers/usersController'
 
 class App {
@@ -59,6 +60,7 @@ class App {
       UsersController,
       ChannelsController,
       TransfersController,
+      LeaderboardController,
       ...(Config.isProduction ? [] : [TestController])
     ])
 

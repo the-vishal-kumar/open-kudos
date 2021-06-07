@@ -217,9 +217,97 @@ export default class UserService {
         const member = members.find(({ userId }) => userId === user.userId)
         return {
           ...user,
-          userName: member ? member.name : String.empty
+          name: member ? member.name : String.empty,
+          realName: member ? member.realName : String.empty
         }
       })
     }
+  }
+
+  public async getLeaderboard(
+    teamId: string,
+    startDate: Date,
+    endDate: Date,
+    limit?: number,
+    page?: number,
+    sortOrder?: SortOrder,
+    sortColumn?: string
+  ) {
+    const members = await this.slackClientService.getWorkspaceMembers(teamId)
+    // const membersIds = members.map(({ userId }) => userId)
+    // Get India Team Members
+    const membersIds = await this.slackClientService.getChannelMembers(teamId)
+    const aggregate = User.aggregate([
+      {
+        $match: {
+          teamId,
+          userId: { $in: membersIds }
+        }
+      },
+      {
+        $lookup: {
+          from: 'transfers',
+          let: { userId: '$userId' },
+          pipeline: [
+            {
+              $match: {
+                $expr: {
+                  $and: [
+                    {
+                      $eq: ['$receiverId', '$$userId']
+                    },
+                    {
+                      $gte: ['$date', new Date(startDate)],
+                    },
+                    {
+                      $lte: ['$date', new Date(endDate)],
+                    }
+                  ]
+                }
+              }
+            }
+          ],
+          as: 'transfers'
+        }
+      },
+      {
+        $project: {
+          _id: "$_id",
+          teamId: "$teamId",
+          userId: "$userId",
+          email: "$email",
+          kudosGranted: { $sum: "$transfers.value" },
+          // transfers: '$transfers'
+        }
+      },
+      {
+        $match: {
+          kudosGranted: { $gt: 0 },
+        }
+      }
+    ]);
+
+    const sortField = sortColumn
+      ? { [sortColumn]: sortOrder }
+      : { kudosGranted: -1 }
+
+    const users = await User.aggregatePaginate(aggregate, {
+      limit,
+      page,
+      sort: sortField,
+    });
+
+    return {
+      ...users,
+      docs: users.docs.map((user, i) => {
+        const member = members.find(({ userId }) => userId === user.userId)
+        return {
+          ...user,
+          rank: limit * (page - 1) + i + 1,
+          name: member ? member.name : String.empty,
+          realName: member ? member.realName : String.empty
+        }
+      })
+    };
   }
 }

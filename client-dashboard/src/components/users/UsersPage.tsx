@@ -10,9 +10,15 @@ const UsersPage: React.FC = () => {
 
   const columns: Array<ColumnProps<IUser>> = [
     {
-      dataIndex: 'userName',
-      key: 'userName',
-      title: 'Name'
+      dataIndex: 'realName',
+      key: 'realName',
+      title: 'Name',
+    },
+    {
+      dataIndex: 'email',
+      key: 'email',
+      title: 'Email',
+      sorter: true,
     },
     {
       dataIndex: 'kudosSpendable',
