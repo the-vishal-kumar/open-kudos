@@ -57,7 +57,7 @@ export default class ExchangedKudos {
                 ],
                 channel: botResponseChannelId,
             });
-        } else if (moment().isoWeekday() >= 1 || moment().isoWeekday() <= 5) {
+        } else if (moment().isoWeekday() >= 1 && moment().isoWeekday() <= 5) {
             client.chat.postMessage({
                 blocks: [
                     {
