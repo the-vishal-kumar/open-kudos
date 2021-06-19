@@ -13,6 +13,8 @@ import TransferService from "../common/services/transfer"
 import { ITransfer } from '../models/transfer.model'
 import SlackClientService from "../common/services/slackClient"
 import { SlackResponseType } from "../common/factories/definitions/slackCommandHandlerFactory"
+import axios, { AxiosRequestConfig } from 'axios'
+import Workspace from "../models/workspace.model"
 
 @Controller('/giveKudos')
 export default class SettingsController {
@@ -62,6 +64,40 @@ export default class SettingsController {
                 )
             }
 
+            if (kudosReason.split(' ').length < 4 || kudosReason.length < 10) {
+                throw new Error(
+                    this.translationsService.getTranslation(
+                        "reasonCannotBeEmpty"
+                    )
+                )
+            }
+
+            // Check whether sender and receiver belongs to India Team
+            const { botAccessToken } = await Workspace.findOne({ teamId: team_id });
+            const botResponseChannelId = await this.slackClientService.getResponseBotChannelId(team_id);
+            const apiConfig: AxiosRequestConfig = {
+                method: `get`,
+                url: `https://slack.com/api/conversations.members?pretty=1&channel=${botResponseChannelId}`,
+                headers: {
+                    'Authorization': `Bearer ${botAccessToken}`
+                }
+            };
+            const { data: { ok, members: channelMembers, error } } = await axios(apiConfig);
+            if (ok && channelMembers.length > 0) {
+                // const indexOfSender = channelMembers.findIndex(memberId => memberId == user_id);
+                // if (indexOfSender === -1) {
+                //     throw new Error(
+                //         this.translationsService.getTranslation("youDoNotBelongToIndiaTeam")
+                //     )
+                // }
+                const indexOfReceiver = channelMembers.findIndex(memberId => memberId == kudosReceiver);
+                if (indexOfReceiver === -1) {
+                    throw new Error(
+                        this.translationsService.getTranslation("receiverDoesNotBelongToIndiaTeam")
+                    )
+                }
+            }
+
             const transferKudosPayload: ITransfer = {
                 senderId: user_id,
                 receiverId: kudosReceiver,
@@ -72,16 +108,21 @@ export default class SettingsController {
 
             await this.transferService.transferKudos(transferKudosPayload)
 
-            this.slackClientService.sendMessage(this.translationsService
-                .getTranslation("youReceivedYPoints",
+            this.slackClientService.sendMessage(
+                this.translationsService.getTranslation(
+                    "youGaveYPoints",
                     transferKudosPayload.senderId,
                     transferKudosPayload.receiverId,
                     transferKudosPayload.value,
-                    transferKudosPayload.comment), {
-                channel: transferKudosPayload.senderId,
-                teamId: transferKudosPayload.teamId,
-                user: transferKudosPayload.senderId
-            }, SlackResponseType.General)
+                    transferKudosPayload.comment
+                ),
+                {
+                    channel: transferKudosPayload.senderId,
+                    teamId: transferKudosPayload.teamId,
+                    user: transferKudosPayload.senderId
+                },
+                SlackResponseType.Standard
+            )
 
             res.status(200).send()
         } catch ({ message }) {
