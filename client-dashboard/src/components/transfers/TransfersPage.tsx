@@ -13,7 +13,7 @@ const TransfersPage: React.FC = () => {
     {
       dataIndex: 'date',
       key: 'date',
-      render: text => moment(text).format('lll'),
+      render: text => moment(text).format('DD-MMM-YYYY'),
       title: 'Date',
     },
     {
