@@ -27,6 +27,11 @@ let menuItemsArray: IMenuItem[] = [
     url: dashboardRoutes.leaderboardPage
   },
   {
+    content: titles.giveKudos,
+    iconType: 'like',
+    url: dashboardRoutes.giveKudosPage
+  },
+  {
     content: titles.transfers,
     iconType: 'transaction',
     url: dashboardRoutes.transfersPage
@@ -36,11 +41,6 @@ let menuItemsArray: IMenuItem[] = [
     iconType: 'user',
     url: dashboardRoutes.teamManagementPage
   },
-  // {
-  //   content: titles.giveKudos,
-  //   iconType: 'like',
-  //   url: dashboardRoutes.giveKudosPage
-  // }
 ]
 
 const renderSubMenu = (menuItem: IMenuItem) => {

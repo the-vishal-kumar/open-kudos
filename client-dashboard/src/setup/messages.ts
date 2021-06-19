@@ -20,11 +20,10 @@ export const titles = {
 
 export const pageTitleMapping = {
   [dashboardRoutes.dashboardPage]: (state?: IGlobalState) => titles.dashboard,
-  // [dashboardRoutes.giveKudosPage]: (state?: IGlobalState) => titles.giveKudos,
+  [dashboardRoutes.giveKudosPage]: (state?: IGlobalState) => titles.giveKudos,
   [dashboardRoutes.newGiftPage]: (state?: IGlobalState) => titles.newGift,
   [dashboardRoutes.editGiftPage]: (state?: IGlobalState) => titles.editGift,
-  [dashboardRoutes.giftRequestsPage]:
-    (state?: IGlobalState) => titles.giftRequests,
+  [dashboardRoutes.giftRequestsPage]: (state?: IGlobalState) => titles.giftRequests,
   [dashboardRoutes.giftsManagementPage]: (state?: IGlobalState) => titles.gifts,
   [dashboardRoutes.settingPage]: (state?: IGlobalState) => titles.settings,
   [dashboardRoutes.transfersPage]: (state?: IGlobalState) => titles.transfers,

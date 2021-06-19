@@ -42,14 +42,14 @@ const GiveKudosForm = ({
                     />
                 </SettingsCard>
 
-                <SettingsCard
+                {/* <SettingsCard
                     title={settingsCardsTitles.kudosAmount}
                 >
                     <Field
                         name="kudosAmount"
                         component={InputNumber}
                     />
-                </SettingsCard>
+                </SettingsCard> */}
 
                 <SettingsCard
                     title={settingsCardsTitles.kudosReason}

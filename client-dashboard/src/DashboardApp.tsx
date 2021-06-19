@@ -3,7 +3,7 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import { Redirect, Route, Switch } from 'react-router-dom'
 import DashboardPage from './components/dashboard/DashboardPage'
-// import GiveKudosPage from './components/give-kudos/GiveKudosPage'
+import GiveKudosPage from './components/give-kudos/GiveKudosPage'
 import GiftRequestsPage from './components/gift-requests/GiftRequestsPage'
 import EditGiftPage from './components/gifts/EditGiftPage'
 import GiftPage from './components/gifts/GiftPage'
@@ -37,11 +37,11 @@ const DashboardApp: React.FC = () => {
                 exact={true}
                 component={DashboardPage}
               />
-              {/* <Route
+              <Route
                 path={dashboardRoutes.giveKudosPage}
                 exact={true}
                 component={GiveKudosPage}
-              /> */}
+              />
               <Route
                 path={dashboardRoutes.giftRequestsPage}
                 exact={true}

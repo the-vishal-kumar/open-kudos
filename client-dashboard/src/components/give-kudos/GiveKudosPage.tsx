@@ -11,7 +11,7 @@ import GiveKudosForm from './GiveKudosForm'
 const GiveKudosPage: React.FC = () => {
   const [loading, setLoading] = useState(false)
   const [kudosReceiver] = useState(String.empty)
-  const [kudosAmount] = useState(0)
+  const [kudosAmount] = useState(1)
   const [kudosReason] = useState(String.empty)
   const endpoint = '/api/giveKudos'
 
@@ -47,8 +47,7 @@ const GiveKudosPage: React.FC = () => {
     }, 1000);
   }, [dispatch])
 
-  const { teamMembers } =
-    useSelector<IGlobalState, IGiveKudosState>(({ giveKudos }) => giveKudos)
+  const { teamMembers } = useSelector<IGlobalState, IGiveKudosState>(({ giveKudos }) => giveKudos)
 
   const allTeamMembersOptions = teamMembers.map(({ userId, name }) => ({
     label: name,
