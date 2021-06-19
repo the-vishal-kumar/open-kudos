@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { withRouter, RouteComponentProps } from 'react-router'
 import { Redirect } from 'react-router-dom'
-import { routes } from '../../setup/config'
+import { dashboardRoutes } from '../../setup/config'
 import { useDispatch } from 'react-redux'
 import { login } from './actions';
 
@@ -18,7 +18,7 @@ const AuthSuccessPage: React.FC<RouteComponentProps<IAccessTokenParams>> = (prop
   })
 
   return (
-    <Redirect to={routes.dashboardPage} />
+    <Redirect to={dashboardRoutes.leaderboardPage} />
   )
 }
 

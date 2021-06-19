@@ -16,11 +16,11 @@ const { Sider } = Layout
 const { Item, SubMenu } = Menu
 
 let menuItemsArray: IMenuItem[] = [
-  {
-    content: titles.dashboard,
-    iconType: 'dashboard',
-    url: dashboardRoutes.dashboardPage
-  },
+  // {
+  //   content: titles.dashboard,
+  //   iconType: 'dashboard',
+  //   url: dashboardRoutes.dashboardPage
+  // },
   {
     content: titles.leaderboard,
     iconType: 'rise',
@@ -30,6 +30,11 @@ let menuItemsArray: IMenuItem[] = [
     content: titles.transfers,
     iconType: 'transaction',
     url: dashboardRoutes.transfersPage
+  },
+  {
+    content: titles.team,
+    iconType: 'user',
+    url: dashboardRoutes.teamManagementPage
   },
   // {
   //   content: titles.giveKudos,
@@ -89,11 +94,6 @@ const SidebarLayout: React.FC<RouteComponentProps> = (props) => {
               content: titles.gifts,
               iconType: 'gift',
               url: dashboardRoutes.giftsManagementPage
-            },
-            {
-              content: titles.team,
-              iconType: 'user',
-              url: dashboardRoutes.teamManagementPage
             },
             {
               content: titles.settings,
