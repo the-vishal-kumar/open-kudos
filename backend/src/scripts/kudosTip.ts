@@ -31,7 +31,7 @@ export default class KudosTip {
                     type: `section`,
                     text: {
                         type: `mrkdwn`,
-                        text: `use */kudos give @receiver for [reason]* to give kudos`,
+                        text: `use */kudos give @receiver for reason* to give kudos`,
                     },
                 },
                 {

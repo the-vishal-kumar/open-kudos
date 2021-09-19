@@ -152,7 +152,7 @@
 
         give
         - this is the main feature of the bot where you give points to fellow co-worker
-        - the message structure: give @pointsReceiver for [reason]
+        - the message structure: give @pointsReceiver for reason
         - you cannot give kudos to somebody for no reason
 
         leaderboard
