@@ -30,7 +30,10 @@ export default class BotInstallationController {
 
     try {
       if (await workspaceService.isTeamExists(workspace.teamId)) {
-        await workspaceService.update(workspace)
+        await Promise.all([
+          workspaceService.update(workspace),
+          userService.initUsers(workspace),
+        ])
       } else {
         await Promise.all([
           workspaceService.create(workspace),
