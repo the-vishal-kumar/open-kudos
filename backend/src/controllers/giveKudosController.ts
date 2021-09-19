@@ -103,7 +103,8 @@ export default class SettingsController {
                 receiverId: kudosReceiver,
                 teamId: team_id,
                 value: kudosAmount,
-                comment: kudosReason
+                comment: kudosReason,
+                date: new Date(),
             }
 
             await this.transferService.transferKudos(transferKudosPayload)

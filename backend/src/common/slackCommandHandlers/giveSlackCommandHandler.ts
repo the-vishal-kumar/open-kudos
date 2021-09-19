@@ -52,7 +52,8 @@ export default class GiveSlackCommandHandler extends BaseSlackCommandHandler {
       receiverId: this.validReceiverId,
       senderId: this.senderId,
       teamId: this.teamId,
-      value: this.validTransferKudosCount
+      value: this.validTransferKudosCount,
+      date: new Date(),
     }
   }
 

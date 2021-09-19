@@ -6,7 +6,8 @@ export interface ITransfer {
   receiverId: string,
   teamId: string,
   value: number,
-  comment?: string
+  comment?: string,
+  date: Date,
 }
 
 export type ITransferDocument = ITransfer & Document
@@ -36,13 +37,13 @@ const transferSchema: Schema<ITransfer> = new Schema({
   teamId: {
     required: 'Team id is required',
     trim: true,
-    type: String,
+    type: String
   },
   value: {
     min: 1,
     required: 'Values is required',
     type: Number
-  }
+  },
 })
 
 transferSchema.index({
