@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
+import { useSelector } from 'react-redux'
 import { Icon, Layout, Menu } from 'antd'
 import { Link, RouteComponentProps, withRouter } from 'react-router-dom'
 import { dashboardRoutes } from '../setup/config'
 import { titles } from '../setup/messages'
-import store from '../setup/store'
+import { IGlobalState } from '../setup/reducers'
 
 interface IMenuItem {
   content: string,
@@ -14,34 +15,6 @@ interface IMenuItem {
 
 const { Sider } = Layout
 const { Item, SubMenu } = Menu
-
-let menuItemsArray: IMenuItem[] = [
-  // {
-  //   content: titles.dashboard,
-  //   iconType: 'dashboard',
-  //   url: dashboardRoutes.dashboardPage
-  // },
-  {
-    content: titles.leaderboard,
-    iconType: 'rise',
-    url: dashboardRoutes.leaderboardPage
-  },
-  {
-    content: titles.giveKudos,
-    iconType: 'like',
-    url: dashboardRoutes.giveKudosPage
-  },
-  {
-    content: titles.transfers,
-    iconType: 'transaction',
-    url: dashboardRoutes.transfersPage
-  },
-  {
-    content: titles.team,
-    iconType: 'user',
-    url: dashboardRoutes.teamManagementPage
-  },
-]
 
 const renderSubMenu = (menuItem: IMenuItem) => {
   const { content, iconType, url, children } = menuItem
@@ -70,46 +43,61 @@ const renderSubMenu = (menuItem: IMenuItem) => {
 }
 
 const SidebarLayout: React.FC<RouteComponentProps> = (props) => {
-  const [menuItems, setMenuItems] = useState(menuItemsArray)
+  const { is_admin, canReceiveGiftsRequest } = useSelector<IGlobalState, any>(state => state.userRole)
+  let menuItemsArray: IMenuItem[] = [
+    // {
+    //   content: titles.dashboard,
+    //   iconType: 'dashboard',
+    //   url: dashboardRoutes.dashboardPage
+    // },
+    {
+      content: titles.leaderboard,
+      iconType: 'rise',
+      url: dashboardRoutes.leaderboardPage
+    },
+    {
+      content: titles.giveKudos,
+      iconType: 'like',
+      url: dashboardRoutes.giveKudosPage
+    },
+    {
+      content: titles.transfers,
+      iconType: 'transaction',
+      url: dashboardRoutes.transfersPage
+    },
+    {
+      content: titles.team,
+      iconType: 'user',
+      url: dashboardRoutes.teamManagementPage
+    },
+  ]
 
-  useEffect(() => {
-    const unsubscribe = store.subscribe(() => {
-      let { userRole: { is_admin, canReceiveGiftsRequest } } = store.getState()
-      if (is_admin || canReceiveGiftsRequest)
-        setMenuItems(
-          menuItems.concat([
-            {
-              children: [
-                {
-                  content: titles.list,
-                  iconType: 'unordered-list',
-                  url: dashboardRoutes.giftsManagementPage
-                },
-                {
-                  content: titles.requests,
-                  iconType: 'ordered-list',
-                  url: dashboardRoutes.giftRequestsPage
-                }
-              ],
-              content: titles.gifts,
-              iconType: 'gift',
-              url: dashboardRoutes.giftsManagementPage
-            },
-            {
-              content: titles.settings,
-              iconType: 'setting',
-              url: dashboardRoutes.settingPage
-            }
-          ])
-        )
-    })
-
-    return () => {
-      if (unsubscribe) {
-        unsubscribe()
+  if (is_admin || canReceiveGiftsRequest) {
+    menuItemsArray = menuItemsArray.concat([
+      {
+        children: [
+          {
+            content: titles.list,
+            iconType: 'unordered-list',
+            url: dashboardRoutes.giftsManagementPage
+          },
+          {
+            content: titles.requests,
+            iconType: 'ordered-list',
+            url: dashboardRoutes.giftRequestsPage
+          }
+        ],
+        content: titles.gifts,
+        iconType: 'gift',
+        url: dashboardRoutes.giftsManagementPage
+      },
+      {
+        content: titles.settings,
+        iconType: 'setting',
+        url: dashboardRoutes.settingPage
       }
-    }
-  }, [menuItems])
+    ])
+  }
 
   const activeRoute = props.location.pathname
 
@@ -127,7 +115,7 @@ const SidebarLayout: React.FC<RouteComponentProps> = (props) => {
         selectedKeys={[activeRoute]}
       >
         {
-          menuItems.map(item => renderSubMenu(item))
+          menuItemsArray.map(item => renderSubMenu(item))
         }
       </Menu>
     </Sider>
