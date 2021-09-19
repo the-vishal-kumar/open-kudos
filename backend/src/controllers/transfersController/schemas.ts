@@ -1,5 +1,11 @@
 import { Schema } from 'express-validator'
 
+export const NewTransferSchema: Schema = {
+  comment: {
+    isString: true,
+  },
+}
+
 export const TransfersPaginationSchema: Schema = {
   limit: {
     in: 'query',

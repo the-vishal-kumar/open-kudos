@@ -7,5 +7,6 @@ export interface ITransfer {
   teamId: string,
   value: number,
   date: string,
-  comment?: string
+  comment?: string,
+  isEditable: boolean,
 }

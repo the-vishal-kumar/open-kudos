@@ -9,6 +9,7 @@ export default class Config {
   private static SIGNING_SECRET = 'SIGNING_SECRET'
   private static SIGNING_SECRET_VERSION = 'SIGNING_SECRET_VERSION'
   private static DROPBOX_TOKEN = 'DROPBOX_TOKEN'
+  private static PUBLISH_EXCHANGED_KUDOS_OF_THE_DAY_UTC_TIME = 'PUBLISH_EXCHANGED_KUDOS_OF_THE_DAY_UTC_TIME'
 
   private static getEnvVariableByKey(key: string): string {
     const varValue = process.env[key]
@@ -61,5 +62,22 @@ export default class Config {
 
   public static get dropboxToken(): string {
     return Config.getEnvVariableByKey(Config.DROPBOX_TOKEN)
+  }
+
+  public static get utcHourAndMinForPublishingExchangedKudosOfTheDay() {
+    let hh = 12, mm = 30;
+    const time = Config.getEnvVariableByKey(Config.PUBLISH_EXCHANGED_KUDOS_OF_THE_DAY_UTC_TIME)
+    let splitTime = time && time.split(':')
+    if (
+      splitTime && splitTime.length == 2
+      && parseInt(splitTime[0], 10) >= 0
+      && parseInt(splitTime[0], 10) <= 23
+      && parseInt(splitTime[1], 10) >= 0
+      && parseInt(splitTime[1], 10) <= 59
+    ) {
+      hh = parseInt(splitTime[0], 10)
+      mm = parseInt(splitTime[1], 10)
+    }
+    return { hh, mm }
   }
 }

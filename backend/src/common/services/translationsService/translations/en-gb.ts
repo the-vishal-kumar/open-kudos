@@ -2,6 +2,7 @@
 import { ILocaleTranslations } from "../../definitions/translationsService"
 export default {
   "couldntFindThePersonYouWantedToGivePointsTo": "Couldn't find the person you wanted to give points to :(",
+  "couldntFindYouContactSystemAdmin": "Couldn't find you, please contact system admin :(",
   "forNoReason": "for no reason",
   "getForKudos": "Get for {0} Kudos",
   "giftsList": "There are the list of gifts you can buy",
@@ -41,4 +42,8 @@ export default {
   "receiverDoesNotBelongToIndiaTeam": "Receiver doesn't not belong to India Team",
   "emptyLeaderboard": "Empty Leaderboard! No Kudos were exchanged this week!",
   "somethingWentWrong": "Oops! Something went wrong!",
+  "kudosAlreadyPublished": "Selected Kudos has already been published",
+  "couldntFindThePersonWhoGavePoints": "Couldn't find the person who gave points :(",
+  "couldntFindThePersonWhoReceivedPoints": "Couldn't find the person who received points :(",
+  "youDidNotGiveThisKudos": "You didn't give this Kudos",
 } as ILocaleTranslations

@@ -37,4 +37,8 @@ export interface ILocaleTranslations {
   receiverDoesNotBelongToIndiaTeam: string
   emptyLeaderboard: string
   somethingWentWrong: string
+  kudosAlreadyPublished: string
+  couldntFindThePersonWhoGavePoints: string
+  couldntFindThePersonWhoReceivedPoints: string
+  youDidNotGiveThisKudos: string
 }

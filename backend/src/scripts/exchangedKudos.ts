@@ -19,7 +19,10 @@ export default class ExchangedKudos {
         const botResponseChannelId = await this.slackClientService.getResponseBotChannelId(teamId);
 
         const { docs: transfers } = await this.transferService.getAllPaginated(
-            teamId, 99999, 1,
+            teamId,
+            99999,
+            1,
+            null,
             moment().subtract(1, 'd').toDate(),
             moment().toDate()
         );

@@ -5,12 +5,15 @@ import LoggerService from './logger'
 import SlackClientService from './slackClient'
 import TranslationsService from './translationsService'
 import UserService from './user'
+import SettingsService from './settings'
 import moment from 'moment'
 import _ from 'lodash'
+import Config from '../consts/config'
 
 export default class TransferService {
   private translationsService = new TranslationsService()
   private userService = new UserService()
+  private settingsService = new SettingsService()
   private logger = new LoggerService()
   private slackClientService = new SlackClientService()
 
@@ -23,6 +26,9 @@ export default class TransferService {
         this.userService.getUser(teamId, receiverId)
       ])
 
+      if (!sender) throw new Error(this.translationsService.getTranslation('couldntFindThePersonWhoGavePoints'))
+      if (!receiver) throw new Error(this.translationsService.getTranslation('couldntFindThePersonWhoReceivedPoints'))
+
       if (value <= sender.kudosGiveable) {
         sender.kudosGiveable -= value
       } else if (value <= (sender.kudosRenewed + sender.kudosGiveable)) {
@@ -34,8 +40,8 @@ export default class TransferService {
       receiver.kudosGranted += value
       receiver.kudosSpendable += value
 
-      Transfer.create({ ...transfer, date: new Date() }).then(async (transfer) => {
-        if (transfer)
+      Transfer.create(transfer).then(async (createdTransfer) => {
+        if (createdTransfer)
           await Promise.all([
             sender.save(),
             receiver.save(),
@@ -75,6 +81,7 @@ export default class TransferService {
     teamId: string,
     limit?: number,
     page?: number,
+    userId: string | null = null,
     startDate?: Date,
     endDate?: Date,
   ) {
@@ -113,9 +120,13 @@ export default class TransferService {
       }
     })
 
+    const { hh, mm } = Config.utcHourAndMinForPublishingExchangedKudosOfTheDay
+    const yesterdayPublishDateTime = moment().startOf('day').add(hh, 'hour').add(mm, 'minute')
+    const publishDateTime = moment().startOf('day').add(hh, 'hour').add(mm, 'minute').add(1, 'day')
+
     return {
       ...transfers,
-      docs: transfers.docs.map(transfer => ({
+      docs: transfers.docs.map((transfer, i) => ({
         ...transfer,
         receiverName: members.find(
           member => member.userId === transfer.receiverId
@@ -128,7 +139,12 @@ export default class TransferService {
         ).name,
         senderRealName: members.find(
           member => member.userId === transfer.senderId
-        ).realName
+        ).realName,
+        isEditable:
+          (yesterdayPublishDateTime.unix() <= moment(transfer.date).unix()
+            && moment(transfer.date).unix() < publishDateTime.unix()
+            && moment().unix() < publishDateTime.unix()
+            && transfer.senderId === userId)
       }))
     }
   }
@@ -136,7 +152,7 @@ export default class TransferService {
   public async getLeaderboardBlocks(teamId: string): Promise<KnownBlock[]> {
     const usersPosition = [':one:', ':two:', ':three:', ':four:', ':five:', ':six:', ':seven:', ':eight:', ':nine:', ':one::zero:'];
 
-    const paginatedTransfers = await this.getAllPaginated(teamId, 99999, 1, moment().startOf('week').toDate(), moment().endOf('week').toDate());
+    const paginatedTransfers = await this.getAllPaginated(teamId, 99999, 1, null, moment().startOf('week').toDate(), moment().endOf('week').toDate());
 
     const transfersPerUser = paginatedTransfers.docs.reduce((total, currentValue, currentIndex, arr) => {
       let indexOfUser = total.findIndex((x) => x.userId == currentValue.receiverId);
@@ -167,5 +183,100 @@ export default class TransferService {
         type: "section",
       }
     ];
+  }
+
+  public async patchTransfer(
+    id: string,
+    senderId: string,
+    teamId: string,
+    comment: string,
+  ) {
+    const transferToBeEdited = await Transfer.findOne({
+      _id: id,
+      teamId,
+    })
+
+    if (!transferToBeEdited) return null
+
+    if (transferToBeEdited.senderId !== senderId) throw new Error(
+      this.translationsService.getTranslation('youDidNotGiveThisKudos')
+    )
+
+    const { hh, mm } = Config.utcHourAndMinForPublishingExchangedKudosOfTheDay
+    const yesterdayPublishDateTime = moment().startOf('day').add(hh, 'hour').add(mm, 'minute')
+    const publishDateTime = moment().startOf('day').add(hh, 'hour').add(mm, 'minute').add(1, 'day')
+
+    if (!(yesterdayPublishDateTime.unix() <= moment(transferToBeEdited.date).unix()
+      && moment(transferToBeEdited.date).unix() < publishDateTime.unix())
+      && moment().unix() < publishDateTime.unix())
+      throw new Error(this.translationsService.getTranslation('kudosAlreadyPublished'))
+
+    return Transfer.findOneAndUpdate({
+      _id: id,
+      teamId,
+    }, {
+      comment,
+    }, {
+      new: true
+    })
+  }
+
+  public async deleteTransfer(id: string, senderId: string, teamId: string) {
+    const transferToBeDeleted = await Transfer.findOne({
+      _id: id,
+      teamId,
+    })
+
+    if (!transferToBeDeleted) return null
+
+    if (transferToBeDeleted.senderId !== senderId) throw new Error(
+      this.translationsService.getTranslation('youDidNotGiveThisKudos')
+    )
+
+    const { hh, mm } = Config.utcHourAndMinForPublishingExchangedKudosOfTheDay
+    const yesterdayPublishDateTime = moment().startOf('day').add(hh, 'hour').add(mm, 'minute')
+    const publishDateTime = moment().startOf('day').add(hh, 'hour').add(mm, 'minute').add(1, 'day')
+
+    if (!(yesterdayPublishDateTime.unix() <= moment(transferToBeDeleted.date).unix()
+      && moment(transferToBeDeleted.date).unix() < publishDateTime.unix())
+      && moment().unix() < publishDateTime.unix())
+      throw new Error(this.translationsService.getTranslation('kudosAlreadyPublished'))
+
+    const [sender, receiver, weeklyKudosAmount, weeklyKudosPriviledgedAmount] = await Promise.all([
+      this.userService.getUser(teamId, transferToBeDeleted.senderId),
+      this.userService.getUser(teamId, transferToBeDeleted.receiverId),
+      this.settingsService.getKudosWeeklyAmount(teamId),
+      this.settingsService.getKudosPriviledgedWeeklyAmount(teamId),
+    ])
+
+    if (!sender) throw new Error(this.translationsService.getTranslation('couldntFindThePersonWhoGavePoints'))
+    if (!receiver) throw new Error(this.translationsService.getTranslation('couldntFindThePersonWhoReceivedPoints'))
+
+    const kudosRenewalAmount = sender.havePriviledgedKudosQuota ? weeklyKudosPriviledgedAmount : weeklyKudosAmount
+
+    receiver.kudosGranted -= transferToBeDeleted.value
+    receiver.kudosSpendable -= transferToBeDeleted.value
+
+    if (transferToBeDeleted.value <= kudosRenewalAmount - sender.kudosGiveable) {
+      sender.kudosGiveable += transferToBeDeleted.value
+    } else if (transferToBeDeleted.value <= (sender.kudosRenewed + sender.kudosGiveable)) {
+      sender.kudosRenewed += transferToBeDeleted.value
+      sender.kudosGiveable += sender.kudosRenewed - kudosRenewalAmount
+      sender.kudosRenewed -= sender.kudosGiveable
+    }
+
+    const deletedGift = await Transfer.findOneAndDelete({
+      _id: id,
+      teamId,
+    })
+
+    if (!deletedGift) return null
+
+    await Promise.all([
+      sender.save(),
+      receiver.save(),
+    ])
+
+    return deletedGift
   }
 }

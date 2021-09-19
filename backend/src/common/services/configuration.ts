@@ -6,6 +6,7 @@ import UserService from './user'
 import RandomCoffeeService from '../../scripts/randomCoffee'
 import ExchangedKudosService from '../../scripts/exchangedKudos'
 import KudosTipService from '../../scripts/kudosTip'
+import Config from '../consts/config'
 
 export default class ConfigurationService {
   private userService = new UserService()
@@ -52,7 +53,8 @@ export default class ConfigurationService {
   public setExchangedKudosOfTheDayTask() {
     // At 12:30 on Monday-Sunday UTC
     // At 18:00 on Monday-Sunday IST
-    cron.schedule('30 12 * * *', async () => {
+    const { hh, mm } = Config.utcHourAndMinForPublishingExchangedKudosOfTheDay
+    cron.schedule(`${mm} ${hh} * * *`, async () => {
       try {
         this.logger.logInfo('setExchangesKudosOfTheDayTask::::Cron task start::::')
         this.exchangedKudosService.postExchangedKudosOfTheDay()
