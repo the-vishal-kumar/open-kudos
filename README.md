@@ -1,3 +1,17 @@
+## About this fork
+
+This is my fork of [Pagepro/open-kudos](https://github.com/Pagepro/open-kudos), a Slack bot that lets teammates give each other kudos. Between December 2020 and April 2021 I added 21 commits. They were proposed upstream in [Pagepro/open-kudos#178](https://github.com/Pagepro/open-kudos/pull/178), which is still open, so the changes live in this fork.
+
+**What I changed**
+
+- **Give kudos from the web dashboard**: a new Give Kudos page and API, which posts to the Slack channel exactly as kudos sent from Slack do
+- **Role-based UI**: user role returned by `/me` and the auth middleware, a role reducer, and a sidebar that adapts to the role
+- **Slack API updates**: replaced deprecated conversation APIs, fetched multi-person and private conversations more efficiently, and added the required OAuth scopes
+- **Data and robustness**: emails stored for every user type, and bots skipped when new members join the workspace
+- **Docs**: rewrote the installation guide with current Slack app settings and screenshots
+
+---
+
 [![Build Status](https://travis-ci.org/Pagepro/open-kudos.svg?branch=development)](https://travis-ci.org/Pagepro/open-kudos)
 [![codecov](https://codecov.io/gh/Pagepro/open-kudos/branch/master/graph/badge.svg)](https://codecov.io/gh/Pagepro/open-kudos)
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
