@@ -10,13 +10,14 @@ import {
 } from '@decorators/express'
 import { Response } from 'express'
 import GiftTransferService from '../../common/services/giftTransfer'
+import AdminMiddleware from '../../middleware/adminMiddleware'
 import AuthMiddleware from '../../middleware/authMiddleware'
 import { IUserEnhancedRequest } from '../../middleware/definitions/authMiddleware'
 import { schemaValidatorFatory } from '../../middleware/schemaValidationMiddleware'
 import { GiftTransfersPaginationSchema, UpdateGiftTransferSchema } from '../giftTransfersController/schemas'
 
 
-@Controller('/gifts/requests', [AuthMiddleware])
+@Controller('/gifts/requests', [AuthMiddleware, AdminMiddleware])
 export default class GiftTransfersController {
   private giftTransferService = new GiftTransferService()
 

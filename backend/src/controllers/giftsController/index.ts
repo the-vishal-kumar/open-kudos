@@ -15,6 +15,7 @@ import multer from 'multer'
 import url from 'url'
 import GiftService from '../../common/services/gift'
 import ImagesService from '../../common/services/images'
+import AdminMiddleware from '../../middleware/adminMiddleware'
 import AuthMiddleware from '../../middleware/authMiddleware'
 import { IUserEnhancedRequest } from '../../middleware/definitions/authMiddleware'
 import { schemaValidatorFatory } from '../../middleware/schemaValidationMiddleware'
@@ -73,7 +74,7 @@ export default class GiftsController {
     res.json(gift)
   }
 
-  @Patch('/:id', [schemaValidatorFatory(NewGiftSchema)])
+  @Patch('/:id', [AdminMiddleware, schemaValidatorFatory(NewGiftSchema)])
   public async patchGift(
     @RequestDecorator() req: IUserEnhancedRequest,
     @Params('id') id: string,
@@ -99,6 +100,7 @@ export default class GiftsController {
   }
 
   @Post('/', [
+    AdminMiddleware,
     upload.single('file'),
     schemaValidatorFatory(NewGiftSchema)
   ])
@@ -127,7 +129,7 @@ export default class GiftsController {
     res.json(newGift)
   }
 
-  @Delete('/:id', [AuthMiddleware])
+  @Delete('/:id', [AdminMiddleware])
   public async deleteGift(
     @RequestDecorator() req: IUserEnhancedRequest,
     @Params('id') id: string,

@@ -8,6 +8,7 @@ import {
 import { Response } from 'express'
 import { SortOrder } from '../../common/definitions/sortOrder'
 import UserService from '../../common/services/user'
+import AdminMiddleware from '../../middleware/adminMiddleware'
 import AuthMiddleware from '../../middleware/authMiddleware'
 import { IUserEnhancedRequest } from '../../middleware/definitions/authMiddleware'
 import { schemaValidatorFatory } from '../../middleware/schemaValidationMiddleware'
@@ -25,7 +26,7 @@ export default class UsersController {
     res.json(req.user)
   }
 
-  @Get('/team', [schemaValidatorFatory(UsersPaginationSchema)])
+  @Get('/team', [AdminMiddleware, schemaValidatorFatory(UsersPaginationSchema)])
   public async getUsersWithoutKudos(
     @RequestDecorator() req: IUserEnhancedRequest,
     @QueryParam('limit') limit: number = 10,
@@ -47,7 +48,7 @@ export default class UsersController {
     res.json(paginatedUsersWithoutKudosGranted)
   }
 
-  @Get('/admins')
+  @Get('/admins', [AdminMiddleware])
   public async getAdmins(
     @RequestDecorator() req: IUserEnhancedRequest,
     @ResponseDecorator() res: Response

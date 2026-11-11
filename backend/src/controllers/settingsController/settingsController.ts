@@ -9,6 +9,7 @@ import { Request, Response } from 'express'
 import SlackConsts from '../../common/consts/slack'
 import SettingsService from '../../common/services/settings'
 import SlackClientService from '../../common/services/slackClient'
+import AdminMiddleware from '../../middleware/adminMiddleware'
 import AuthMiddleware from '../../middleware/authMiddleware'
 import { IUserEnhancedRequest } from '../../middleware/definitions/authMiddleware'
 import ISettings from './models/ISettings'
@@ -18,7 +19,7 @@ export default class SettingsController {
   private settingsService = new SettingsService()
   private slackService = new SlackClientService()
 
-  @Get('/bot', [AuthMiddleware])
+  @Get('/bot', [AuthMiddleware, AdminMiddleware])
   public async getBotResponseChannelId(
     @RequestDecorator() req: IUserEnhancedRequest,
     @ResponseDecorator() res: Response
@@ -55,7 +56,7 @@ export default class SettingsController {
     )
   }
 
-  @Post('/', [AuthMiddleware])
+  @Post('/', [AuthMiddleware, AdminMiddleware])
   public async saveSettings(
     @RequestDecorator() req: IUserEnhancedRequest,
     @ResponseDecorator() res: Response
